@@ -1,23 +1,74 @@
-# Compiled class file
-*.class
+# compiled output
+/dist
+/tmp
+/out-tsc
 
-# Log file
+# dependencies
+/node_modules
+
+# IDEs and editors
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+*.iml
+*.ipr
+*.iws
+*.idea
+
+# Eclipse Project Files
+.classpath
+.project
+.settings/
+
+# Build Artifacts
+MANIFEST.MF
+META-INF/
+classes/
+.gradle/
+build/
+target/
+bin/
+out/
+dependency-reduced-pom.xml
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# misc
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+/typings
+
+# Logs
+log.txt
 *.log
 
-# BlueJ files
-*.ctxt
+### NetBeans ###
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+Thumbs.db
+*.DS_Store
 
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package Files #
-*.jar
-*.war
-*.nar
-*.ear
-*.zip
-*.tar.gz
-*.rar
-
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
+/.mvn/
+*/webapp/bower_components
+*/webapp/dist/
+*/webapp/node_modules/
+*/webapp/node/
+*/webapp/etc/
+*/webapp/package-lock.json
