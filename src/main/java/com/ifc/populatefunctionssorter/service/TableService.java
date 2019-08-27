@@ -3,7 +3,7 @@ package com.ifc.populatefunctionssorter.service;
 import com.ifc.populatefunctionssorter.entity.Function;
 import com.ifc.populatefunctionssorter.entity.Table;
 import com.ifc.populatefunctionssorter.entity.View;
-import com.ifc.populatefunctionssorter.repository.providers.TableDAO;
+import com.ifc.populatefunctionssorter.repository.TableDAO;
 import java.util.List;
 import java.util.stream.Collectors;
 

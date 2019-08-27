@@ -1,4 +1,4 @@
-package com.ifc.populatefunctionssorter.repository.providers;
+package com.ifc.populatefunctionssorter.repository;
 
 import static com.ifc.populatefunctionssorter.repository.providers.JdbcProvider.getJdbcTemplate;
 
