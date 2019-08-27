@@ -1,36 +1,20 @@
 package com.ifc.populatefunctionssorter.app;
 
-import com.ifc.populatefunctionssorter.entity.Function;
-import com.ifc.populatefunctionssorter.service.FunctionService;
+import com.ifc.populatefunctionssorter.entity.Table;
+import com.ifc.populatefunctionssorter.service.TableService;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class App {
 
     public static final String SCHEMA = "datastaging";
 
     public static void main(String[] args) {
-        FunctionService functionService = new FunctionService();
+        TableService tableService = new TableService();
 
-        List<Function> functions = functionService.getAllPopulateFunctionsInSchema(SCHEMA);
+        List<Table> tables = tableService.getAllTablesInSchema(SCHEMA);
 
-        for (Function function : functions) {
-            System.out.println(function);
-        }
-
-        List<Optional> views = new ArrayList<>();
-        List<Optional> tables = new ArrayList<>();
-
-        for (Function function : functions) {
-            views.add(functionService.getViewNameByFunction(function));
-            tables.add(functionService.getTableNameByFunction(function));
-        }
-
-        System.out.println("functions: " + functions.size());
-        System.out.println("views: " + views.size());
-        System.out.println("tables: " + tables.size());
+        tables.forEach(System.out::println);
     }
 
 }

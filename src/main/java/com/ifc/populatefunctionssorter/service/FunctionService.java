@@ -3,19 +3,19 @@ package com.ifc.populatefunctionssorter.service;
 import com.ifc.populatefunctionssorter.app.PropertiesProvider;
 import com.ifc.populatefunctionssorter.entity.Function;
 import com.ifc.populatefunctionssorter.repository.FunctionDAO;
-import lombok.extern.slf4j.Slf4j;
+import com.ifc.populatefunctionssorter.utils.RegexUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Slf4j
 public class FunctionService {
 
     private List<String> excludedFunctions;
+    private static final String HINT = " Add the function to a list of excluded functions in the configuration file.";
+    private static final String VIEW_NAME_PATTERN = "(?i)from %s.(.+?)( |\n|\t|;)";
 
     public FunctionService() {
         excludedFunctions = getExcludedFunctions();
@@ -34,32 +34,27 @@ public class FunctionService {
                 .collect(Collectors.toList());
     }
 
-    public Optional<String> getViewNameByFunction(Function function) {
-        String viewName = StringUtils.substringBetween(
-                function.getDefinition(),
-                "from " + function.getSchema() + ".",
-                "\n");
+    public String getViewNameByFunction(Function function) {
+        final String pattern = String.format(VIEW_NAME_PATTERN, function.getSchema());
 
-        if (StringUtils.isEmpty(viewName)) {
-            log.warn("Function " + function + " doesn't match any views. The result may be invalid");
-            return Optional.empty();
-        } else {
-            return Optional.of(viewName);
+        Optional<String> viewNameOptional = RegexUtil.substring(function.getDefinition(), pattern);
+
+        if (!viewNameOptional.isPresent() || StringUtils.isEmpty(viewNameOptional.get())) {
+            throw new RuntimeException("Function " + function + " doesn't match any views." + HINT);
         }
+        return viewNameOptional.get().toLowerCase().trim();
     }
 
-    public Optional<String> getTableNameByFunction(Function function) {
+    public String getTableNameByFunction(Function function) {
         String tableName = StringUtils.substringBetween(
                 function.getDefinition(),
                 "insert into " + function.getSchema() + ".",
                 " (");
 
         if (StringUtils.isEmpty(tableName)) {
-            log.warn("Function " + function + " doesn't match any tables. The result may be invalid");
-            return Optional.empty();
-        } else {
-            return Optional.of(tableName);
+            throw new RuntimeException("Function " + function + " doesn't match any tables." + HINT);
         }
+        return tableName.toLowerCase().trim();
     }
 
     private boolean isFunctionExcluded(String functionName) {
@@ -73,7 +68,7 @@ public class FunctionService {
 
     private void validateFunctionDefinition(Function function) {
         if (StringUtils.isEmpty(function.getDefinition())) {
-            log.warn("Unable to get the definition of function " + function + ". The result may be invalid");
+            throw new RuntimeException("Unable to get the definition of the function " + function + "." + HINT);
         }
     }
 
