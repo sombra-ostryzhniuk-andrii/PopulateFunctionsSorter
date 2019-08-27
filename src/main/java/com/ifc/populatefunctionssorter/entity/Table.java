@@ -10,10 +10,11 @@ public class Table {
     public Table() {
     }
 
-    public Table(String name, View view, Function function) {
+    public Table(String name, View view, Function function, String schema) {
         this.name = name;
         this.view = view;
         this.function = function;
+        this.schema = schema;
     }
 
     public String getName() {
@@ -21,7 +22,7 @@ public class Table {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = name.toLowerCase();
     }
 
     public View getView() {
@@ -45,6 +46,11 @@ public class Table {
     }
 
     public void setSchema(String schema) {
-        this.schema = schema;
+        this.schema = schema.toLowerCase();
+    }
+
+    @Override
+    public String toString() {
+        return schema + "." + name;
     }
 }

@@ -7,13 +7,15 @@ import java.util.List;
 
 import static com.ifc.populatefunctionssorter.repository.providers.JdbcProvider.getJdbcTemplate;
 
-public class FunctionsDAO {
+public class FunctionDAO {
 
     public static List<Function> getAllPopulateFunctionsInSchema(String schema) {
         return getJdbcTemplate()
-                .query("select routine_name as name, routine_definition as definition " +
-                "from information_schema.routines " +
-                "where specific_schema = ?",
+                .query("select routine_name as name, " +
+                           "       routine_definition as definition, " +
+                           "       specific_schema as schema " +
+                           "from information_schema.routines " +
+                           "where specific_schema = ?",
                         BeanPropertyRowMapper.newInstance(Function.class),
                         schema);
     }

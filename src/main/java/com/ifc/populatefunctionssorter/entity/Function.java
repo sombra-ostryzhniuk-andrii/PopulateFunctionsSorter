@@ -9,9 +9,10 @@ public class Function {
     public Function() {
     }
 
-    public Function(String name, String definition) {
+    public Function(String name, String definition, String schema) {
         this.name = name.toLowerCase();
         this.definition = definition.toLowerCase();
+        this.schema = schema.toLowerCase();
     }
 
     public String getName() {
@@ -27,7 +28,7 @@ public class Function {
     }
 
     public void setDefinition(String definition) {
-        this.definition = definition.toLowerCase();
+        this.definition = definition == null ? null : definition.toLowerCase();
     }
 
     public String getSchema() {
@@ -35,6 +36,11 @@ public class Function {
     }
 
     public void setSchema(String schema) {
-        this.schema = schema;
+        this.schema = schema.toLowerCase();
+    }
+
+    @Override
+    public String toString() {
+        return schema + "." + name + "()";
     }
 }
