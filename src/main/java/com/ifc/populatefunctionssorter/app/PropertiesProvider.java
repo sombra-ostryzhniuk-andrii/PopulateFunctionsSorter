@@ -2,11 +2,14 @@ package com.ifc.populatefunctionssorter.app;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
 
 public class PropertiesProvider {
 
     private static Properties properties;
+    private static final String PROPERTY_ARRAY_DELIMITER = ",";
 
 //    private static final String PROPERTIES_FILE_NAME = "config.properties";
     private static final String PROPERTIES_FILE_NAME = "config-impl.properties";
@@ -40,6 +43,11 @@ public class PropertiesProvider {
 
     public static String getProperty(String propertyName) {
         return getProperties().getProperty(propertyName);
+    }
+
+    public static List<String> getPropertyAsList(String propertyName) {
+        String property = getProperty(propertyName);
+        return Arrays.asList(property.split(PROPERTY_ARRAY_DELIMITER));
     }
 
 }

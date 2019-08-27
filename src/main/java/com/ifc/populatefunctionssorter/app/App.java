@@ -1,24 +1,32 @@
 package com.ifc.populatefunctionssorter.app;
 
-import com.ifc.populatefunctionssorter.dao.JdbcProvider;
-import org.springframework.jdbc.support.rowset.SqlRowSet;
+import com.ifc.populatefunctionssorter.entity.Function;
+import com.ifc.populatefunctionssorter.repository.FunctionsDAO;
+import com.ifc.populatefunctionssorter.service.FunctionService;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class App {
 
-    public static void main(String[] args) {
-        SqlRowSet rs = JdbcProvider.getJdbcTemplate().queryForRowSet(
-                "select cat_definition\n" +
-                "from datastaging.category");
+    public static final String SCHEMA = "datastaging";
 
-        List<String> list = new LinkedList<>();
-        while (rs.next()) {
-            list.add(rs.getString(1));
+    public static void main(String[] args) {
+        FunctionService functionService = new FunctionService();
+
+        List<Function> functions = functionService.getAllPopulateFunctionsInSchema(SCHEMA);
+
+        List<String> views = new ArrayList<>();
+        List<String> tables = new ArrayList<>();
+
+        for (Function function : functions) {
+            views.add(functionService.getViewNameByFunction(function));
+            tables.add(functionService.getTableNameByFunction(function));
         }
 
-        list.forEach(System.out::println);
+        System.out.println("functions: " + functions.size());
+        System.out.println("views: " + views.size());
+        System.out.println("tables: " + tables.size());
     }
 
 }

@@ -1,4 +1,4 @@
-package com.ifc.populatefunctionssorter.dao;
+package com.ifc.populatefunctionssorter.repository.providers;
 
 import com.ifc.populatefunctionssorter.app.PropertiesProvider;
 import org.postgresql.ds.PGSimpleDataSource;
