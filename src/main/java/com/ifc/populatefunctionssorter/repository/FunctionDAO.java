@@ -15,7 +15,8 @@ public class FunctionDAO {
                            "       routine_definition as definition, " +
                            "       specific_schema as schema " +
                            "from information_schema.routines " +
-                           "where specific_schema = ?",
+                           "where specific_schema = ? " +
+                           "  and routine_name like 'populate%'",
                         BeanPropertyRowMapper.newInstance(Function.class),
                         schema);
     }
