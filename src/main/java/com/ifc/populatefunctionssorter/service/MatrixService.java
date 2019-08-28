@@ -21,9 +21,7 @@ public class MatrixService {
                 tableReferences.add(new TableReferences(tables.get(j)));
             }
 
-            if (!tableReferences.isEmpty()) {
-                matrix.put(tables.get(i), tableReferences);
-            }
+            matrix.put(tables.get(i), tableReferences);
         }
 
         return matrix;

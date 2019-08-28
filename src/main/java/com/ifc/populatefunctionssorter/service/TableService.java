@@ -23,8 +23,6 @@ public class TableService {
                     final String viewName = functionService.getViewNameByFunction(function);
                     final View view = viewService.getViewByName(viewName, function.getSchema());
 
-                    function.setDefinition(null);
-
                     return new Table(tableName, view, function, function.getSchema());
                 })
                 .collect(Collectors.toList());
