@@ -16,7 +16,7 @@ public class FunctionService {
 
     private List<String> excludedFunctions;
     private static final String HINT = " Add the function to a list of excluded functions in the configuration file.";
-    private static final String VIEW_NAME_PATTERN = "(?i)from %s.(.+?)( |\n|\t|;)";
+    private static final String FIND_VIEW_NAME_PATTERN = "(?i)from %s.(.+?)\\b";
 
     public FunctionService() {
         excludedFunctions = PropertiesProvider.getExcludedFunctions();
@@ -36,7 +36,7 @@ public class FunctionService {
     }
 
     public String getViewNameByFunction(Function function) {
-        final String pattern = String.format(VIEW_NAME_PATTERN, function.getSchema());
+        final String pattern = String.format(FIND_VIEW_NAME_PATTERN, function.getSchema());
 
         Optional<String> viewNameOptional = RegexUtil.substring(function.getDefinition(), pattern);
 

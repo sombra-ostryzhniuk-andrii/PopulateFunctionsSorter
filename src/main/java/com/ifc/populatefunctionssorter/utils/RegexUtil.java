@@ -15,4 +15,10 @@ public final class RegexUtil {
         Matcher matcher = pattern.matcher(content);
         return matcher.find() ? Optional.of(matcher.group(1)) : Optional.empty();
     }
+
+    public static boolean isMatched(String content, String patternString) {
+        Pattern pattern = Pattern.compile(patternString);
+        Matcher matcher = pattern.matcher(content);
+        return matcher.find();
+    }
 }

@@ -20,11 +20,16 @@ public class TableReferences {
         return table;
     }
 
-    public Boolean getReferenced() {
+    public Boolean isReferenced() {
         return isReferenced;
     }
 
     public void setReferenced(Boolean referenced) {
         isReferenced = referenced;
+    }
+
+    @Override
+    public String toString() {
+        return table + " : " + isReferenced;
     }
 }
