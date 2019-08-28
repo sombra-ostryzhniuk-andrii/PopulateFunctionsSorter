@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 public final class RegexUtil {
 
     private RegexUtil() {
-        throw new UnsupportedOperationException("Unable to create an object of the util RegexUtil");
+        throw new UnsupportedOperationException("Unable to create an object of the util " + RegexUtil.class.getName());
     }
 
     public static Optional<String> substring(String content, String patternString) {

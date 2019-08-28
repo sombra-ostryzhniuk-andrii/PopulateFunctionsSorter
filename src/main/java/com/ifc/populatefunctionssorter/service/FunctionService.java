@@ -4,6 +4,7 @@ import com.ifc.populatefunctionssorter.app.PropertiesProvider;
 import com.ifc.populatefunctionssorter.entity.Function;
 import com.ifc.populatefunctionssorter.repository.FunctionDAO;
 import com.ifc.populatefunctionssorter.utils.RegexUtil;
+import com.ifc.populatefunctionssorter.utils.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
 import java.util.List;
@@ -18,7 +19,7 @@ public class FunctionService {
     private static final String VIEW_NAME_PATTERN = "(?i)from %s.(.+?)( |\n|\t|;)";
 
     public FunctionService() {
-        excludedFunctions = getExcludedFunctions();
+        excludedFunctions = PropertiesProvider.getExcludedFunctions();
     }
 
     public List<Function> getAllPopulateFunctionsInSchema(String schema) {
@@ -42,7 +43,7 @@ public class FunctionService {
         if (!viewNameOptional.isPresent() || StringUtils.isEmpty(viewNameOptional.get())) {
             throw new RuntimeException("Function " + function + " doesn't match any views." + HINT);
         }
-        return viewNameOptional.get().toLowerCase().trim();
+        return StringUtil.validateString(viewNameOptional.get());
     }
 
     public String getTableNameByFunction(Function function) {
@@ -54,16 +55,12 @@ public class FunctionService {
         if (StringUtils.isEmpty(tableName)) {
             throw new RuntimeException("Function " + function + " doesn't match any tables." + HINT);
         }
-        return tableName.toLowerCase().trim();
+        return StringUtil.validateString(tableName);
     }
 
     private boolean isFunctionExcluded(String functionName) {
         return excludedFunctions.stream()
                 .anyMatch(function -> Objects.equals(function, functionName));
-    }
-
-    private List<String> getExcludedFunctions() {
-        return PropertiesProvider.getPropertyAsList("exclude.functions");
     }
 
     private void validateFunctionDefinition(Function function) {
