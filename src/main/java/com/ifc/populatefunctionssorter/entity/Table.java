@@ -1,5 +1,7 @@
 package com.ifc.populatefunctionssorter.entity;
 
+import java.util.Objects;
+
 public class Table {
 
     private String name;
@@ -52,5 +54,18 @@ public class Table {
     @Override
     public String toString() {
         return schema + "." + name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Table table = (Table) o;
+        return Objects.equals(name, table.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 }
