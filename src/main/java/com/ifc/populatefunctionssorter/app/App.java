@@ -1,43 +1,32 @@
 package com.ifc.populatefunctionssorter.app;
 
+import com.ifc.populatefunctionssorter.dto.PopulationSequence;
 import com.ifc.populatefunctionssorter.entity.Table;
-import com.ifc.populatefunctionssorter.graph.TableReferences;
-import com.ifc.populatefunctionssorter.service.GraphService;
-import com.ifc.populatefunctionssorter.service.MatrixService;
+import com.ifc.populatefunctionssorter.service.SequenceService;
 import com.ifc.populatefunctionssorter.service.TableService;
-import org.jgrapht.graph.DefaultWeightedEdge;
-import org.jgrapht.graph.SimpleDirectedWeightedGraph;
-import org.jgrapht.traverse.DepthFirstIterator;
 
-import java.util.Iterator;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class App {
 
     public static final String schema = "datastaging";
 
     private static TableService tableService = new TableService();
-    private static MatrixService matrixService = new MatrixService();
-    private static GraphService graphService = new GraphService();
+    private static SequenceService sequenceService = new SequenceService();
 
     public static void main(String[] args) {
         List<Table> tables = tableService.getAllTablesInSchema(schema);
 
-        Map<Table, List<TableReferences>> matrix = matrixService.createReferencesMatrix(tables);
+        Set<PopulationSequence> sequenceSet = sequenceService.getPopulationSequenceSet(tables);
 
-        SimpleDirectedWeightedGraph<Table, DefaultWeightedEdge> graph = graphService.generateGraph(matrix);
+        List<PopulationSequence> sequenceList = sequenceSet.stream()
+                .sorted(Comparator.comparing(PopulationSequence::getSequenceNumber))
+                .collect(Collectors.toList());
 
-        Iterator<Table> iter = new DepthFirstIterator<>(graph);
-        while (iter.hasNext()) {
-            Table vertex = iter.next();
-
-            System.out.println(vertex + " : " + graph.inDegreeOf(vertex));
-
-            graph.edgesOf(vertex).forEach(edge -> {
-                System.out.println(edge + " : " + graph.getEdgeWeight(edge));
-            });
-        }
+        sequenceList.forEach(System.out::println);
     }
 
     public static String getSchema() {
