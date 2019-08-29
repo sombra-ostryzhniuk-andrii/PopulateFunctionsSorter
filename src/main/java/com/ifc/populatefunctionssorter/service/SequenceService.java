@@ -1,6 +1,7 @@
 package com.ifc.populatefunctionssorter.service;
 
 import com.ifc.populatefunctionssorter.dto.PopulationSequence;
+import com.ifc.populatefunctionssorter.dto.RecursiveTables;
 import com.ifc.populatefunctionssorter.entity.Table;
 import com.ifc.populatefunctionssorter.utils.RegexUtil;
 
@@ -58,6 +59,8 @@ public class SequenceService {
         Map<Table, List<Table>> dependenciesMap = getDependenciesMap(tables);
         SequenceFactory sequenceFactory = new SequenceFactory();
 
+        Set<RecursiveTables> recursiveTables = getRecursiveTables(dependenciesMap);
+
         dependenciesMap.entrySet().removeIf(entry -> {
             Table table = entry.getKey();
             List<Table> dependencies = entry.getValue();
@@ -83,6 +86,30 @@ public class SequenceService {
         }
 
         return sequenceFactory.getSequenceSet();
+    }
+
+    private Set<RecursiveTables> getRecursiveTables(Map<Table, List<Table>> dependenciesMap) {
+        Set<RecursiveTables> recursiveTables = new HashSet<>();
+
+        dependenciesMap.forEach((table, dependencies) -> dependencies.forEach(dependentTable -> {
+
+            getRecursiveTable(table, dependentTable, dependenciesMap).ifPresent(recursiveTables::add);
+
+        }));
+        return recursiveTables;
+    }
+
+    private Optional<RecursiveTables> getRecursiveTable(Table tableToCheckRecursion,
+                                                        Table subDependentTable,
+                                                        Map<Table, List<Table>> dependenciesMap) {
+
+        for (Table table : dependenciesMap.get(subDependentTable)) {
+
+            return table.equals(tableToCheckRecursion)
+                    ? Optional.of(new RecursiveTables(tableToCheckRecursion, subDependentTable))
+                    : getRecursiveTable(subDependentTable, table, dependenciesMap);
+        }
+        return Optional.empty();
     }
 
 }
