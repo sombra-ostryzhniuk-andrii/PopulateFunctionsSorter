@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 public class SequenceFactory {
 
     private final Set<PopulationSequence> sequenceSet = new HashSet<>();
-    private int sequenceCounter = 0;
+    private int sequenceCounter = 1;
 
     public void addToSequence(Table table) {
         sequenceSet.add(new PopulationSequence(table, sequenceCounter));

@@ -11,4 +11,12 @@ public final class StringUtil {
     public static String validateString(String string) {
         return StringUtils.isEmpty(string) ? string : string.toLowerCase().trim();
     }
+
+    public static String validateSqlScript(String string) {
+        return StringUtils.isEmpty(string)
+                ? string
+                : string.toLowerCase()
+                        .replaceAll("[\n|\t]", " ")
+                        .replaceAll(" +", " ");
+    }
 }
