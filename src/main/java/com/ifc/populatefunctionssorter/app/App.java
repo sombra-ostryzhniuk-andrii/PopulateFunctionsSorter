@@ -5,13 +5,10 @@ import com.ifc.populatefunctionssorter.graph.TableReferences;
 import com.ifc.populatefunctionssorter.service.GraphService;
 import com.ifc.populatefunctionssorter.service.MatrixService;
 import com.ifc.populatefunctionssorter.service.TableService;
-import org.jgrapht.graph.DefaultWeightedEdge;
-import org.jgrapht.graph.SimpleDirectedWeightedGraph;
+import org.jgrapht.graph.*;
+import org.jgrapht.traverse.BreadthFirstIterator;
 import org.jgrapht.traverse.DepthFirstIterator;
-
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class App {
 
@@ -26,18 +23,44 @@ public class App {
 
         Map<Table, List<TableReferences>> matrix = matrixService.createReferencesMatrix(tables);
 
-        SimpleDirectedWeightedGraph<Table, DefaultWeightedEdge> graph = graphService.generateGraph(matrix);
+        DefaultDirectedGraph<Table, DefaultEdge> graph = graphService.generateGraph(matrix);
 
         Iterator<Table> iter = new DepthFirstIterator<>(graph);
         while (iter.hasNext()) {
             Table vertex = iter.next();
 
-            System.out.println(vertex + " : " + graph.inDegreeOf(vertex));
+            if (vertex.getName().equals("company")) {
+                getAllParents(graph, vertex).forEach(System.out::println);
+                System.out.println(" ");
+                getAllChildren(graph, vertex).forEach(System.out::println);
 
-            graph.edgesOf(vertex).forEach(edge -> {
-                System.out.println(edge + " : " + graph.getEdgeWeight(edge));
-            });
+                graph.incomingEdgesOf(vertex);
+                graph.outgoingEdgesOf(vertex);
+            }
         }
+    }
+
+    protected static Set<Table> getAllParents(DefaultDirectedGraph<Table, DefaultEdge> graph, Table vertex) {
+        Set<Table> parents = new HashSet<>();
+        EdgeReversedGraph<Table, DefaultEdge> reversedGraph = new EdgeReversedGraph<>(graph);
+        BreadthFirstIterator<Table, DefaultEdge> breadthFirstIterator =
+                new BreadthFirstIterator<>(reversedGraph, vertex);
+
+        while (breadthFirstIterator.hasNext()) {
+            parents.add(breadthFirstIterator.next());
+        }
+        return parents;
+    }
+
+    protected static Set<Table> getAllChildren(DefaultDirectedGraph<Table, DefaultEdge> graph, Table vertex) {
+        Set<Table> parents = new HashSet<>();
+        BreadthFirstIterator<Table, DefaultEdge> breadthFirstIterator =
+                new BreadthFirstIterator<>(graph, vertex);
+
+        while (breadthFirstIterator.hasNext()) {
+            parents.add(breadthFirstIterator.next());
+        }
+        return parents;
     }
 
     public static String getSchema() {

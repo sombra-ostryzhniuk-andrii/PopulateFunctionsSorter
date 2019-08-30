@@ -2,17 +2,17 @@ package com.ifc.populatefunctionssorter.service;
 
 import com.ifc.populatefunctionssorter.entity.Table;
 import com.ifc.populatefunctionssorter.graph.TableReferences;
-import org.jgrapht.graph.DefaultWeightedEdge;
-import org.jgrapht.graph.SimpleDirectedWeightedGraph;
+import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.DefaultDirectedGraph;
 import java.util.List;
 import java.util.Map;
 
 public class GraphService {
 
-    public SimpleDirectedWeightedGraph<Table, DefaultWeightedEdge> generateGraph(Map<Table, List<TableReferences>> matrix) {
+    public DefaultDirectedGraph<Table, DefaultEdge> generateGraph(Map<Table, List<TableReferences>> matrix) {
 
-        SimpleDirectedWeightedGraph<Table, DefaultWeightedEdge> graph =
-                new SimpleDirectedWeightedGraph<Table, DefaultWeightedEdge>(DefaultWeightedEdge.class);
+        DefaultDirectedGraph<Table, DefaultEdge> graph =
+                new DefaultDirectedGraph<Table, DefaultEdge>(DefaultEdge.class);
 
         matrix.keySet().forEach(graph::addVertex);
 

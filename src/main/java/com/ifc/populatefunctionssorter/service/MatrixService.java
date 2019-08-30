@@ -13,16 +13,14 @@ public class MatrixService {
     public Map<Table, List<TableReferences>> createMatrix(List<Table> tables) {
         Map<Table, List<TableReferences>> matrix = new HashMap<>();
 
-        for (int i = 0; i < tables.size(); i++) {
+        tables.forEach(table -> {
 
             List<TableReferences> tableReferences = new LinkedList<>();
 
-            for (int j = i+1; j < tables.size(); j++) {
-                tableReferences.add(new TableReferences(tables.get(j)));
-            }
+            tables.forEach(innerTable -> tableReferences.add(new TableReferences(innerTable)));
 
-            matrix.put(tables.get(i), tableReferences);
-        }
+            matrix.put(table, tableReferences);
+        });
 
         return matrix;
     }
@@ -33,10 +31,13 @@ public class MatrixService {
         matrix.forEach((table, tableReferencesList) -> {
             tableReferencesList.parallelStream().forEach(tableReferences -> {
 
-                final String viewDefinition = tableReferences.getTable().getView().getDefinition();
-                final String pattern = String.format(FIND_TABLE_NAME_PATTERN, table.toString());
+                if (!table.equals(tableReferences.getTable())) {
 
-                tableReferences.setReferenced(RegexUtil.isMatched(viewDefinition, pattern));
+                    final String viewDefinition = tableReferences.getTable().getView().getDefinition();
+                    final String pattern = String.format(FIND_TABLE_NAME_PATTERN, table.toString());
+
+                    tableReferences.setReferenced(RegexUtil.isMatched(viewDefinition, pattern));
+                }
             });
         });
 
