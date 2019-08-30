@@ -8,10 +8,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -20,6 +17,7 @@ public class PropertiesProvider {
     private static Properties properties;
     private static String schema;
     private static final String PROPERTY_ARRAY_DELIMITER = ",";
+    private static final String SCHEMAS = "schemas";
     private static final String EXCLUDE_FUNCTIONS_PROPERTY = "exclude.functions.";
 
     private static String configFilePath;
@@ -67,11 +65,33 @@ public class PropertiesProvider {
                 : Arrays.asList(property.split(PROPERTY_ARRAY_DELIMITER));
     }
 
+    public static String getRequiredProperty(String propertyName) {
+        String property = getProperties().getProperty(propertyName);
+        if (property == null) {
+            throw new RuntimeException("Unable to find property '" + propertyName + "' in the configuration file " + configFilePath);
+        }
+        return property;
+    }
+
+    public static List<String> getRequiredPropertyAsList(String propertyName) {
+        String property = getRequiredProperty(propertyName);
+        return StringUtils.isEmpty(property)
+                ? Collections.emptyList()
+                : Arrays.asList(property.split(PROPERTY_ARRAY_DELIMITER));
+    }
+
     public static List<String> getExcludedFunctions() {
         return PropertiesProvider.getPropertyAsList(getExcludeFunctionsProperty())
                 .stream()
                 .map(StringUtil::validateString)
                 .collect(Collectors.toList());
+    }
+
+    public static Set<String> getSchemas() {
+        return PropertiesProvider.getRequiredPropertyAsList(SCHEMAS)
+                .stream()
+                .map(StringUtil::validateString)
+                .collect(Collectors.toSet());
     }
 
     public static String getSchema() {
