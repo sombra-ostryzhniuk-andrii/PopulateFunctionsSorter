@@ -3,6 +3,9 @@ package com.ifc.populatefunctionssorter.app;
 import com.ifc.populatefunctionssorter.utils.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
@@ -19,31 +22,31 @@ public class PropertiesProvider {
     private static final String PROPERTY_ARRAY_DELIMITER = ",";
     private static final String EXCLUDE_FUNCTIONS_PROPERTY = "exclude.functions.";
 
-//    private static final String PROPERTIES_FILE_NAME = "config.properties";
-    private static final String PROPERTIES_FILE_NAME = "config-impl.properties";
+    private static String configFilePath;
 
     private static Properties getProperties() {
         if (properties == null) {
             synchronized (PropertiesProvider.class) {
                 if (properties == null) {
-                    properties = loadProperties(PROPERTIES_FILE_NAME);
+                    if (configFilePath == null) {
+                        configFilePath = CommandOptionsProvider.valueOfRequired(CommandOptionsProvider.CONFIG_FILE_PARAMETER);
+                    }
+                    properties = loadProperties(configFilePath);
                 }
             }
         }
         return properties;
     }
 
-    private static Properties loadProperties(final String fileName) {
-        try (InputStream input = PropertiesProvider.class.getClassLoader().getResourceAsStream(fileName)) {
-
-            if (input == null) {
-                throw new RuntimeException("Unable to find a config file");
-            }
+    private static Properties loadProperties(final String filePath) {
+        try (InputStream input = new FileInputStream(filePath)) {
 
             Properties properties = new Properties();
             properties.load(input);
             return properties;
 
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException("Unable to find the configuration file " + filePath, e);
         } catch (IOException e) {
             throw new RuntimeException("Unable to load configuration properties", e);
         }
@@ -52,7 +55,7 @@ public class PropertiesProvider {
     public static String getProperty(String propertyName) {
         String property = getProperties().getProperty(propertyName);
         if (property == null) {
-            log.warn("Unable to find property '" + propertyName + "' in the configuration file " + PROPERTIES_FILE_NAME);
+            log.warn("Unable to find property '" + propertyName + "' in the configuration file " + configFilePath);
         }
         return property;
     }

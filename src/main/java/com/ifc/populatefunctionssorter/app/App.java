@@ -11,12 +11,15 @@ import java.util.stream.Collectors;
 
 public class App {
 
-    public static final String schema = "datastaging";
-
-    private static TableService tableService = new TableService();
-    private static SequenceService sequenceService = new SequenceService();
+    private static final String schema = "datastaging";
+    private static String[] arguments;
 
     public static void main(String[] args) {
+        arguments = args;
+
+        TableService tableService = new TableService();
+        SequenceService sequenceService = new SequenceService();
+
         System.out.println("Process is running...");
 
         List<Table> tables = tableService.getAllTablesInSchema(schema);
@@ -36,5 +39,12 @@ public class App {
 
     public static String getSchema() {
         return schema;
+    }
+
+    static String[] getArguments() {
+        if (arguments == null) {
+            throw new RuntimeException("Arguments have not been initialized");
+        }
+        return arguments;
     }
 }
