@@ -1,66 +1,33 @@
 package com.ifc.populatefunctionssorter.app;
 
+import com.ifc.populatefunctionssorter.dto.PopulationSequence;
 import com.ifc.populatefunctionssorter.entity.Table;
-import com.ifc.populatefunctionssorter.graph.TableReferences;
-import com.ifc.populatefunctionssorter.service.GraphService;
-import com.ifc.populatefunctionssorter.service.MatrixService;
+import com.ifc.populatefunctionssorter.service.SequenceService;
 import com.ifc.populatefunctionssorter.service.TableService;
-import org.jgrapht.graph.*;
-import org.jgrapht.traverse.BreadthFirstIterator;
-import org.jgrapht.traverse.DepthFirstIterator;
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class App {
 
     public static final String schema = "datastaging";
 
     private static TableService tableService = new TableService();
-    private static MatrixService matrixService = new MatrixService();
-    private static GraphService graphService = new GraphService();
+    private static SequenceService sequenceService = new SequenceService();
 
     public static void main(String[] args) {
+        System.out.println("Process is running...");
+
         List<Table> tables = tableService.getAllTablesInSchema(schema);
 
-        Map<Table, List<TableReferences>> matrix = matrixService.createReferencesMatrix(tables);
+        Set<PopulationSequence> sequenceSet = sequenceService.getPopulationSequenceSet(tables);
 
-        DefaultDirectedGraph<Table, DefaultEdge> graph = graphService.generateGraph(matrix);
+        List<PopulationSequence> sequenceList = sequenceSet.stream()
+                .sorted(Comparator.comparing(PopulationSequence::getSequenceNumber))
+                .collect(Collectors.toList());
 
-        Iterator<Table> iter = new DepthFirstIterator<>(graph);
-        while (iter.hasNext()) {
-            Table vertex = iter.next();
-
-            if (vertex.getName().equals("company")) {
-                getAllParents(graph, vertex).forEach(System.out::println);
-                System.out.println(" ");
-                getAllChildren(graph, vertex).forEach(System.out::println);
-
-                graph.incomingEdgesOf(vertex);
-                graph.outgoingEdgesOf(vertex);
-            }
-        }
-    }
-
-    protected static Set<Table> getAllParents(DefaultDirectedGraph<Table, DefaultEdge> graph, Table vertex) {
-        Set<Table> parents = new HashSet<>();
-        EdgeReversedGraph<Table, DefaultEdge> reversedGraph = new EdgeReversedGraph<>(graph);
-        BreadthFirstIterator<Table, DefaultEdge> breadthFirstIterator =
-                new BreadthFirstIterator<>(reversedGraph, vertex);
-
-        while (breadthFirstIterator.hasNext()) {
-            parents.add(breadthFirstIterator.next());
-        }
-        return parents;
-    }
-
-    protected static Set<Table> getAllChildren(DefaultDirectedGraph<Table, DefaultEdge> graph, Table vertex) {
-        Set<Table> parents = new HashSet<>();
-        BreadthFirstIterator<Table, DefaultEdge> breadthFirstIterator =
-                new BreadthFirstIterator<>(graph, vertex);
-
-        while (breadthFirstIterator.hasNext()) {
-            parents.add(breadthFirstIterator.next());
-        }
-        return parents;
+        sequenceList.forEach(System.out::println);
     }
 
     public static String getSchema() {
