@@ -27,7 +27,11 @@ public class App {
                 .sorted(Comparator.comparing(PopulationSequence::getSequenceNumber))
                 .collect(Collectors.toList());
 
+        System.out.println("\n\nThe population order:\n");
         sequenceList.forEach(System.out::println);
+
+        System.out.println("\n\nExcluded functions:\n");
+        PropertiesProvider.getExcludedFunctions().forEach(System.out::println);
     }
 
     public static String getSchema() {
