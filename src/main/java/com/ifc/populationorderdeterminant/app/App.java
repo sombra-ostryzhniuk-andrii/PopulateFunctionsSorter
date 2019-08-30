@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 public class App {
 
-    private static final String schema = "datastaging";
+    private static final String schema = "dw";
     private static String[] arguments;
 
     public static void main(String[] args) {

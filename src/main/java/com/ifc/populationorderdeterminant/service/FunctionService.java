@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class FunctionService {
 
     private List<String> excludedFunctions;
-    private static final String HINT = " Add the function to a list of excluded functions in the configuration file.";
+    private static final String HINT = " add the function to a list of excluded functions in the configuration file.";
     private static final String FIND_VIEW_NAME_PATTERN = "(?i)from %s.(.+?)\\b";
 
     public FunctionService() {
@@ -41,7 +41,7 @@ public class FunctionService {
         Optional<String> viewNameOptional = RegexUtil.substring(function.getDefinition(), pattern);
 
         if (!viewNameOptional.isPresent() || StringUtils.isEmpty(viewNameOptional.get())) {
-            throw new RuntimeException("Function " + function + " doesn't match any views." + HINT);
+            throw new RuntimeException("Function " + function + " doesn't match any views," + HINT);
         }
         return StringUtil.validateString(viewNameOptional.get());
     }
@@ -53,7 +53,7 @@ public class FunctionService {
                 " (");
 
         if (StringUtils.isEmpty(tableName)) {
-            throw new RuntimeException("Function " + function + " doesn't match any tables." + HINT);
+            throw new RuntimeException("Function " + function + " doesn't match any tables," + HINT);
         }
         return StringUtil.validateString(tableName);
     }
@@ -65,7 +65,8 @@ public class FunctionService {
 
     private void validateFunctionDefinition(Function function) {
         if (StringUtils.isEmpty(function.getDefinition())) {
-            throw new RuntimeException("Unable to get the definition of the function " + function + "." + HINT);
+            throw new RuntimeException("Unable to get the definition of the function " + function + ". " +
+                    "You may don't have access on this function. Change the function owner or" + HINT);
         }
     }
 
