@@ -4,7 +4,6 @@ import com.ifc.populatefunctionssorter.dto.PopulationSequence;
 import com.ifc.populatefunctionssorter.entity.Table;
 import com.ifc.populatefunctionssorter.service.SequenceService;
 import com.ifc.populatefunctionssorter.service.TableService;
-
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
@@ -18,6 +17,8 @@ public class App {
     private static SequenceService sequenceService = new SequenceService();
 
     public static void main(String[] args) {
+        System.out.println("Process is running...");
+
         List<Table> tables = tableService.getAllTablesInSchema(schema);
 
         Set<PopulationSequence> sequenceSet = sequenceService.getPopulationSequenceSet(tables);
