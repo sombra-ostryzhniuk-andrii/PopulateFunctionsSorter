@@ -1,7 +1,7 @@
-package com.ifc.populatefunctionssorter.service;
+package com.ifc.populationorderdeterminant.service;
 
-import com.ifc.populatefunctionssorter.dto.PopulationSequence;
-import com.ifc.populatefunctionssorter.entity.Table;
+import com.ifc.populationorderdeterminant.dto.PopulationSequence;
+import com.ifc.populationorderdeterminant.entity.Table;
 
 import java.util.HashSet;
 import java.util.Set;

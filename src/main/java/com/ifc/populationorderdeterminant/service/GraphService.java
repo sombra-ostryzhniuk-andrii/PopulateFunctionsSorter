@@ -1,8 +1,8 @@
-package com.ifc.populatefunctionssorter.service;
+package com.ifc.populationorderdeterminant.service;
 
-import com.ifc.populatefunctionssorter.dto.RecursiveTables;
-import com.ifc.populatefunctionssorter.entity.Table;
-import com.ifc.populatefunctionssorter.utils.RegexUtil;
+import com.ifc.populationorderdeterminant.dto.RecursiveTables;
+import com.ifc.populationorderdeterminant.entity.Table;
+import com.ifc.populationorderdeterminant.utils.RegexUtil;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.EdgeReversedGraph;

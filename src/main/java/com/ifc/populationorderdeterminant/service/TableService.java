@@ -1,9 +1,9 @@
-package com.ifc.populatefunctionssorter.service;
+package com.ifc.populationorderdeterminant.service;
 
-import com.ifc.populatefunctionssorter.entity.Function;
-import com.ifc.populatefunctionssorter.entity.Table;
-import com.ifc.populatefunctionssorter.entity.View;
-import com.ifc.populatefunctionssorter.repository.TableDAO;
+import com.ifc.populationorderdeterminant.entity.Function;
+import com.ifc.populationorderdeterminant.entity.Table;
+import com.ifc.populationorderdeterminant.entity.View;
+import com.ifc.populationorderdeterminant.repository.TableDAO;
 import java.util.List;
 import java.util.stream.Collectors;
 

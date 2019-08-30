@@ -1,6 +1,6 @@
-package com.ifc.populatefunctionssorter.dto;
+package com.ifc.populationorderdeterminant.dto;
 
-import com.ifc.populatefunctionssorter.entity.Table;
+import com.ifc.populationorderdeterminant.entity.Table;
 
 import java.io.Serializable;
 import java.util.Objects;

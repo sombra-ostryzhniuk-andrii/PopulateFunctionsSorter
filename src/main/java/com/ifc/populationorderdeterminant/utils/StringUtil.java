@@ -1,4 +1,4 @@
-package com.ifc.populatefunctionssorter.utils;
+package com.ifc.populationorderdeterminant.utils;
 
 import org.apache.commons.lang3.StringUtils;
 

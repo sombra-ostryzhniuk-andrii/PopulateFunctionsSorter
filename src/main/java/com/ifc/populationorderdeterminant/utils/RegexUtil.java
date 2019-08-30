@@ -1,4 +1,4 @@
-package com.ifc.populatefunctionssorter.utils;
+package com.ifc.populationorderdeterminant.utils;
 
 import java.util.Optional;
 import java.util.regex.Matcher;

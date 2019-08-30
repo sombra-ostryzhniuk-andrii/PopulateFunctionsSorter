@@ -1,4 +1,4 @@
-package com.ifc.populatefunctionssorter.app;
+package com.ifc.populationorderdeterminant.app;
 
 import java.util.*;
 

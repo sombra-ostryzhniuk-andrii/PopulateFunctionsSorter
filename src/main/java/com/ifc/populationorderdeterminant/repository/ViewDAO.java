@@ -1,9 +1,9 @@
-package com.ifc.populatefunctionssorter.repository;
+package com.ifc.populationorderdeterminant.repository;
 
-import com.ifc.populatefunctionssorter.entity.View;
+import com.ifc.populationorderdeterminant.entity.View;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 
-import static com.ifc.populatefunctionssorter.repository.providers.JdbcProvider.getJdbcTemplate;
+import static com.ifc.populationorderdeterminant.repository.providers.JdbcProvider.getJdbcTemplate;
 
 public class ViewDAO {
 

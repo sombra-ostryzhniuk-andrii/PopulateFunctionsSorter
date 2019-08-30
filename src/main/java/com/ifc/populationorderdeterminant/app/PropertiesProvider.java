@@ -1,6 +1,6 @@
-package com.ifc.populatefunctionssorter.app;
+package com.ifc.populationorderdeterminant.app;
 
-import com.ifc.populatefunctionssorter.utils.StringUtil;
+import com.ifc.populationorderdeterminant.utils.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 

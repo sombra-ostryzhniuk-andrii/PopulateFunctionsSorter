@@ -1,7 +1,7 @@
-package com.ifc.populatefunctionssorter.service;
+package com.ifc.populationorderdeterminant.service;
 
-import com.ifc.populatefunctionssorter.entity.View;
-import com.ifc.populatefunctionssorter.repository.ViewDAO;
+import com.ifc.populationorderdeterminant.entity.View;
+import com.ifc.populationorderdeterminant.repository.ViewDAO;
 import org.apache.commons.lang3.StringUtils;
 
 public class ViewService {

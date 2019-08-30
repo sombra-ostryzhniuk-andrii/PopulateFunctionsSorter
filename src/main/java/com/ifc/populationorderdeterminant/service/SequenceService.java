@@ -1,10 +1,10 @@
-package com.ifc.populatefunctionssorter.service;
+package com.ifc.populationorderdeterminant.service;
 
-import com.ifc.populatefunctionssorter.dto.PopulationSequence;
-import com.ifc.populatefunctionssorter.dto.RecursiveTables;
-import com.ifc.populatefunctionssorter.entity.Table;
-import com.ifc.populatefunctionssorter.utils.RegexUtil;
-import com.ifc.populatefunctionssorter.utils.StringUtil;
+import com.ifc.populationorderdeterminant.dto.PopulationSequence;
+import com.ifc.populationorderdeterminant.dto.RecursiveTables;
+import com.ifc.populationorderdeterminant.entity.Table;
+import com.ifc.populationorderdeterminant.utils.RegexUtil;
+import com.ifc.populationorderdeterminant.utils.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;

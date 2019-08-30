@@ -1,4 +1,4 @@
-package com.ifc.populatefunctionssorter.entity;
+package com.ifc.populationorderdeterminant.entity;
 
 import java.util.Objects;
 

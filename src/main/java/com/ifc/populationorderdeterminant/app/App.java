@@ -1,9 +1,9 @@
-package com.ifc.populatefunctionssorter.app;
+package com.ifc.populationorderdeterminant.app;
 
-import com.ifc.populatefunctionssorter.dto.PopulationSequence;
-import com.ifc.populatefunctionssorter.entity.Table;
-import com.ifc.populatefunctionssorter.service.SequenceService;
-import com.ifc.populatefunctionssorter.service.TableService;
+import com.ifc.populationorderdeterminant.dto.PopulationSequence;
+import com.ifc.populationorderdeterminant.entity.Table;
+import com.ifc.populationorderdeterminant.service.SequenceService;
+import com.ifc.populationorderdeterminant.service.TableService;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;

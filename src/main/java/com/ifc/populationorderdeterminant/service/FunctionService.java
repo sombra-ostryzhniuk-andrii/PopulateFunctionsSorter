@@ -1,10 +1,10 @@
-package com.ifc.populatefunctionssorter.service;
+package com.ifc.populationorderdeterminant.service;
 
-import com.ifc.populatefunctionssorter.app.PropertiesProvider;
-import com.ifc.populatefunctionssorter.entity.Function;
-import com.ifc.populatefunctionssorter.repository.FunctionDAO;
-import com.ifc.populatefunctionssorter.utils.RegexUtil;
-import com.ifc.populatefunctionssorter.utils.StringUtil;
+import com.ifc.populationorderdeterminant.app.PropertiesProvider;
+import com.ifc.populationorderdeterminant.entity.Function;
+import com.ifc.populationorderdeterminant.repository.FunctionDAO;
+import com.ifc.populationorderdeterminant.utils.RegexUtil;
+import com.ifc.populationorderdeterminant.utils.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
 import java.util.List;
