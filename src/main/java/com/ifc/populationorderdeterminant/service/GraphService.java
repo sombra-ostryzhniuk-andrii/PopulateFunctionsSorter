@@ -92,7 +92,7 @@ public class GraphService {
         return childrenMap;
     }
 
-    private Set<Table> getAllParents(DefaultDirectedGraph<Table, DefaultEdge> graph, Table vertex) {
+    public Set<Table> getAllParents(DefaultDirectedGraph<Table, DefaultEdge> graph, Table vertex) {
         Set<Table> parentsSet = new HashSet<>();
         EdgeReversedGraph<Table, DefaultEdge> reversedGraph = new EdgeReversedGraph<>(graph);
         BreadthFirstIterator<Table, DefaultEdge> breadthFirstIterator = new BreadthFirstIterator<>(reversedGraph, vertex);
@@ -107,7 +107,7 @@ public class GraphService {
         return parentsSet;
     }
 
-    private Set<Table> getAllChildren(DefaultDirectedGraph<Table, DefaultEdge> graph, Table vertex) {
+    public Set<Table> getAllChildren(DefaultDirectedGraph<Table, DefaultEdge> graph, Table vertex) {
         Set<Table> childrenSet = new HashSet<>();
         BreadthFirstIterator<Table, DefaultEdge> breadthFirstIterator = new BreadthFirstIterator<>(graph, vertex);
 

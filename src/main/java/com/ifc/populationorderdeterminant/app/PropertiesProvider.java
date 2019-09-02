@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Slf4j
 public class PropertiesProvider {
@@ -17,6 +18,7 @@ public class PropertiesProvider {
     private static Properties properties;
     private static final String PROPERTY_ARRAY_DELIMITER = ",";
     private static final String SCHEMAS = "schemas";
+    private static final String SOURCE_SCHEMAS = "source.schemas";
     private static final String EXCLUDE_FUNCTIONS_PROPERTY = "exclude.functions.";
 
     private static String configFilePath;
@@ -57,13 +59,6 @@ public class PropertiesProvider {
         return property;
     }
 
-    public static List<String> getPropertyAsList(String propertyName) {
-        String property = getProperty(propertyName);
-        return StringUtils.isEmpty(property)
-                ? Collections.emptyList()
-                : Arrays.asList(property.split(PROPERTY_ARRAY_DELIMITER));
-    }
-
     public static String getRequiredProperty(String propertyName) {
         String property = getProperties().getProperty(propertyName);
         if (property == null) {
@@ -75,24 +70,35 @@ public class PropertiesProvider {
         return property;
     }
 
+    public static List<String> getPropertyAsList(String propertyName) {
+        String property = getProperty(propertyName);
+        return StringUtils.isEmpty(property)
+                ? Collections.emptyList()
+                : Stream.of(property.split(PROPERTY_ARRAY_DELIMITER))
+                    .map(StringUtil::validateString)
+                    .collect(Collectors.toList());
+    }
+
     public static List<String> getRequiredPropertyAsList(String propertyName) {
         String property = getRequiredProperty(propertyName);
-        return Arrays.asList(property.split(PROPERTY_ARRAY_DELIMITER));
+        return Stream.of(property.split(PROPERTY_ARRAY_DELIMITER))
+                .map(StringUtil::validateString)
+                .collect(Collectors.toList());
     }
 
     public static List<String> getExcludedFunctions(String schema) {
-        return PropertiesProvider.getPropertyAsList(getExcludeFunctionsProperty(schema))
-                .stream()
-                .map(StringUtil::validateString)
-                .collect(Collectors.toList());
+        return PropertiesProvider.getPropertyAsList(getExcludeFunctionsProperty(schema));
     }
 
     public static List<String> getSchemas() {
         return PropertiesProvider.getRequiredPropertyAsList(SCHEMAS)
                 .stream()
-                .map(StringUtil::validateString)
                 .sorted()
                 .collect(Collectors.toList());
+    }
+
+    public static List<String> getSourceSchemas() {
+        return PropertiesProvider.getRequiredPropertyAsList(SOURCE_SCHEMAS);
     }
 
     public static String getExcludeFunctionsProperty(String schema) {
