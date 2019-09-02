@@ -18,7 +18,7 @@ public class SequenceService {
 
     private GraphService graphService = new GraphService();
 
-    public Set<PopulationSequence> getPopulationSequenceSet(List<Table> tables) {
+    public Set<PopulationSequence> getPopulationSequenceSet(Set<Table> tables) {
         DefaultDirectedGraph<Table, DefaultEdge> graph = graphService.generateGraph(tables);
         Map<Table, Set<Table>> parentsMap = graphService.getParentsMap(graph);
         Set<RecursiveTables> recursiveTables = graphService.getRecursiveTables(graph);

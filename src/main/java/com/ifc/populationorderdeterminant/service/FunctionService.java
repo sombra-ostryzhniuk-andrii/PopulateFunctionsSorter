@@ -23,7 +23,7 @@ public class FunctionService {
                 .collect(Collectors.toMap(schema -> schema, PropertiesProvider::getExcludedFunctions, (a, b) -> b));
     }
 
-    public List<Function> getAllPopulateFunctionsInSchema(String schema) {
+    public Set<Function> getAllPopulateFunctionsInSchema(String schema) {
         List<Function> functions = FunctionDAO.getAllPopulateFunctionsInSchema(schema);
 
         if (CollectionUtils.isEmpty(functions)) {
@@ -33,7 +33,7 @@ public class FunctionService {
         return functions.stream()
                 .filter(function -> !isFunctionExcluded(function))
                 .peek(this::validateFunctionDefinition)
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
     }
 
     public String getViewNameByFunction(Function function) {

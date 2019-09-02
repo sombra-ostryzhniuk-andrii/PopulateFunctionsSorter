@@ -4,7 +4,7 @@ import com.ifc.populationorderdeterminant.entity.Function;
 import com.ifc.populationorderdeterminant.entity.Table;
 import com.ifc.populationorderdeterminant.entity.View;
 import com.ifc.populationorderdeterminant.repository.TableDAO;
-import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class TableService {
@@ -12,8 +12,8 @@ public class TableService {
     private FunctionService functionService = new FunctionService();
     private ViewService viewService = new ViewService();
 
-    public List<Table> getAllTablesInSchema(final String schema) {
-        List<Function> functions = functionService.getAllPopulateFunctionsInSchema(schema);
+    public Set<Table> getAllTablesInSchema(final String schema) {
+        Set<Function> functions = functionService.getAllPopulateFunctionsInSchema(schema);
 
         return functions.parallelStream()
                 .map(function -> {
@@ -25,7 +25,7 @@ public class TableService {
 
                     return new Table(tableName, view, function, function.getSchema());
                 })
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
     }
 
     private void validateTableName(String tableName, String schema) {

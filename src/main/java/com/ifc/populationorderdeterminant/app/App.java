@@ -24,7 +24,7 @@ public class App {
         PropertiesProvider.getSchemas().forEach(schema -> {
             System.out.println("Processing of the " + schema + " schema...");
 
-            List<Table> tables = tableService.getAllTablesInSchema(schema);
+            Set<Table> tables = tableService.getAllTablesInSchema(schema);
             Set<PopulationSequence> sequenceSet = sequenceService.getPopulationSequenceSet(tables);
 
             List<PopulationSequence> sequenceList = sequenceSet.stream()

@@ -15,7 +15,7 @@ public class GraphService {
 
     private static final String FIND_TABLE_NAME_PATTERN = "(?i).*?\\b%s\\b.*?";
 
-    private Map<Table, Set<Table>> createReferencesMap(List<Table> tables) {
+    private Map<Table, Set<Table>> createReferencesMap(Set<Table> tables) {
         Map<Table, Set<Table>> referencesMap = new HashMap<>();
 
         tables.parallelStream().forEach(table -> {
@@ -38,7 +38,7 @@ public class GraphService {
         return referencesMap;
     }
 
-    public DefaultDirectedGraph<Table, DefaultEdge> generateGraph(List<Table> tables) {
+    public DefaultDirectedGraph<Table, DefaultEdge> generateGraph(Set<Table> tables) {
         Map<Table, Set<Table>> referencesMap = createReferencesMap(tables);
 
         DefaultDirectedGraph<Table, DefaultEdge> graph = new DefaultDirectedGraph<>(DefaultEdge.class);
