@@ -7,19 +7,20 @@ import com.ifc.populationorderdeterminant.utils.RegexUtil;
 import com.ifc.populationorderdeterminant.utils.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class FunctionService {
 
-    private List<String> excludedFunctions;
+    private Map<String, List<String>> excludedFunctions;
     private static final String HINT = " add the function to a list of excluded functions in the configuration file.";
     private static final String FIND_VIEW_NAME_PATTERN = "(?i)from %s.(.+?)\\b";
 
     public FunctionService() {
-        excludedFunctions = PropertiesProvider.getExcludedFunctions();
+        this.excludedFunctions = PropertiesProvider.getSchemas()
+                .stream()
+                .collect(Collectors.toMap(schema -> schema, PropertiesProvider::getExcludedFunctions, (a, b) -> b));
     }
 
     public List<Function> getAllPopulateFunctionsInSchema(String schema) {
@@ -30,7 +31,7 @@ public class FunctionService {
         }
 
         return functions.stream()
-                .filter(function -> !isFunctionExcluded(function.getName()))
+                .filter(function -> !isFunctionExcluded(function))
                 .peek(this::validateFunctionDefinition)
                 .collect(Collectors.toList());
     }
@@ -58,9 +59,10 @@ public class FunctionService {
         return StringUtil.validateString(tableName);
     }
 
-    private boolean isFunctionExcluded(String functionName) {
-        return excludedFunctions.stream()
-                .anyMatch(function -> Objects.equals(function, functionName));
+    private boolean isFunctionExcluded(Function function) {
+        return excludedFunctions.get(function.getSchema())
+                .stream()
+                .anyMatch(excludedFunction -> Objects.equals(excludedFunction, function.getName()));
     }
 
     private void validateFunctionDefinition(Function function) {

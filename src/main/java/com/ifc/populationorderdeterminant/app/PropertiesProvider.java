@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 public class PropertiesProvider {
 
     private static Properties properties;
-    private static String schema;
     private static final String PROPERTY_ARRAY_DELIMITER = ",";
     private static final String SCHEMAS = "schemas";
     private static final String EXCLUDE_FUNCTIONS_PROPERTY = "exclude.functions.";
@@ -69,39 +68,34 @@ public class PropertiesProvider {
         String property = getProperties().getProperty(propertyName);
         if (property == null) {
             throw new RuntimeException("Unable to find property '" + propertyName + "' in the configuration file " + configFilePath);
+        } else if (property.isEmpty()) {
+            throw new RuntimeException("Property '" + propertyName + "' is empty. Please, configure the property in the " +
+                    "configuration file " + configFilePath);
         }
         return property;
     }
 
     public static List<String> getRequiredPropertyAsList(String propertyName) {
         String property = getRequiredProperty(propertyName);
-        return StringUtils.isEmpty(property)
-                ? Collections.emptyList()
-                : Arrays.asList(property.split(PROPERTY_ARRAY_DELIMITER));
+        return Arrays.asList(property.split(PROPERTY_ARRAY_DELIMITER));
     }
 
-    public static List<String> getExcludedFunctions() {
-        return PropertiesProvider.getPropertyAsList(getExcludeFunctionsProperty())
+    public static List<String> getExcludedFunctions(String schema) {
+        return PropertiesProvider.getPropertyAsList(getExcludeFunctionsProperty(schema))
                 .stream()
                 .map(StringUtil::validateString)
                 .collect(Collectors.toList());
     }
 
-    public static Set<String> getSchemas() {
+    public static List<String> getSchemas() {
         return PropertiesProvider.getRequiredPropertyAsList(SCHEMAS)
                 .stream()
                 .map(StringUtil::validateString)
-                .collect(Collectors.toSet());
+                .sorted()
+                .collect(Collectors.toList());
     }
 
-    public static String getSchema() {
-        if (schema == null) {
-            schema = App.getSchema();
-        }
-        return schema;
-    }
-
-    public static String getExcludeFunctionsProperty() {
-        return EXCLUDE_FUNCTIONS_PROPERTY + getSchema();
+    public static String getExcludeFunctionsProperty(String schema) {
+        return EXCLUDE_FUNCTIONS_PROPERTY + schema;
     }
 }

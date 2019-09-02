@@ -10,11 +10,11 @@ public class JdbcProvider {
     private static DataSource dataSource;
     private static JdbcTemplate jdbcTemplate;
 
-    private static final String HOST = PropertiesProvider.getProperty("db.host");
-    private static final String PORT = PropertiesProvider.getProperty("db.port");
-    private static final String DB_NAME = PropertiesProvider.getProperty("db.name");
-    private static final String DB_USER = PropertiesProvider.getProperty("db.user");
-    private static final String DB_PASSWORD = PropertiesProvider.getProperty("db.password");
+    private static final String HOST = PropertiesProvider.getRequiredProperty("db.host");
+    private static final String PORT = PropertiesProvider.getRequiredProperty("db.port");
+    private static final String DB_NAME = PropertiesProvider.getRequiredProperty("db.name");
+    private static final String DB_USER = PropertiesProvider.getRequiredProperty("db.user");
+    private static final String DB_PASSWORD = PropertiesProvider.getRequiredProperty("db.password");
 
     private JdbcProvider(){
     }

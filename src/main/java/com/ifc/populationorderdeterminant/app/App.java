@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 
 public class App {
 
-    private static final String schema = "dw";
     private static String[] arguments;
 
     public static void main(String[] args) {
@@ -22,23 +21,23 @@ public class App {
 
         System.out.println("Process is running...");
 
-        List<Table> tables = tableService.getAllTablesInSchema(schema);
+        PropertiesProvider.getSchemas().forEach(schema -> {
+            System.out.println("Processing of the " + schema + " schema...");
 
-        Set<PopulationSequence> sequenceSet = sequenceService.getPopulationSequenceSet(tables);
+            List<Table> tables = tableService.getAllTablesInSchema(schema);
+            Set<PopulationSequence> sequenceSet = sequenceService.getPopulationSequenceSet(tables);
 
-        List<PopulationSequence> sequenceList = sequenceSet.stream()
-                .sorted(Comparator.comparing(PopulationSequence::getSequenceNumber))
-                .collect(Collectors.toList());
+            List<PopulationSequence> sequenceList = sequenceSet.stream()
+                    .sorted(Comparator.comparing(PopulationSequence::getSequenceNumber))
+                    .collect(Collectors.toList());
 
-        System.out.println("\n\nThe population order:\n");
-        sequenceList.forEach(System.out::println);
+            System.out.println("\nThe population order of the " + schema + " schema:\n");
+            sequenceList.forEach(System.out::println);
 
-        System.out.println("\n\nExcluded functions:\n");
-        PropertiesProvider.getExcludedFunctions().forEach(System.out::println);
-    }
-
-    public static String getSchema() {
-        return schema;
+            System.out.println("\n\nExcluded functions in the " + schema + " schema:\n");
+            PropertiesProvider.getExcludedFunctions(schema).forEach(System.out::println);
+            System.out.println("\n\n");
+        });
     }
 
     static String[] getArguments() {
