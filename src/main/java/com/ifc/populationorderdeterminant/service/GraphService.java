@@ -2,6 +2,7 @@ package com.ifc.populationorderdeterminant.service;
 
 import com.ifc.populationorderdeterminant.dto.RecursiveTables;
 import com.ifc.populationorderdeterminant.entity.Table;
+import com.ifc.populationorderdeterminant.utils.RegexEnum;
 import com.ifc.populationorderdeterminant.utils.RegexUtil;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
@@ -13,8 +14,6 @@ import java.util.stream.Collectors;
 
 public class GraphService {
 
-    private static final String FIND_TABLE_NAME_PATTERN = "(?i).*?\\b%s\\b.*?";
-
     private Map<Table, Set<Table>> createReferencesMap(Set<Table> tables) {
         Map<Table, Set<Table>> referencesMap = new HashMap<>();
 
@@ -25,7 +24,7 @@ public class GraphService {
             tables.forEach(innerTable -> {
 
                 final String viewDefinition = innerTable.getView().getDefinition();
-                final String pattern = String.format(FIND_TABLE_NAME_PATTERN, table.toString());
+                final String pattern = String.format(RegexEnum.FIND_TABLE_NAME_PATTERN.value(), table.toString());
 
                 if (!table.equals(innerTable) && RegexUtil.isMatched(viewDefinition, pattern)) {
                     dependentTables.add(innerTable);

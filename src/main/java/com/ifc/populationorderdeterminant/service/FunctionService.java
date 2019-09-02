@@ -3,6 +3,7 @@ package com.ifc.populationorderdeterminant.service;
 import com.ifc.populationorderdeterminant.app.PropertiesProvider;
 import com.ifc.populationorderdeterminant.entity.Function;
 import com.ifc.populationorderdeterminant.repository.FunctionDAO;
+import com.ifc.populationorderdeterminant.utils.RegexEnum;
 import com.ifc.populationorderdeterminant.utils.RegexUtil;
 import com.ifc.populationorderdeterminant.utils.StringUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -15,7 +16,6 @@ public class FunctionService {
 
     private Map<String, List<String>> excludedFunctions;
     private static final String HINT = " add the function to a list of excluded functions in the configuration file.";
-    private static final String FIND_VIEW_NAME_PATTERN = "(?i)from %s.(.+?)\\b";
 
     public FunctionService() {
         this.excludedFunctions = PropertiesProvider.getSchemas()
@@ -37,7 +37,7 @@ public class FunctionService {
     }
 
     public String getViewNameByFunction(Function function) {
-        final String pattern = String.format(FIND_VIEW_NAME_PATTERN, function.getSchema());
+        final String pattern = String.format(RegexEnum.FIND_VIEW_NAME_PATTERN.value(), function.getSchema());
 
         Optional<String> viewNameOptional = RegexUtil.substring(function.getDefinition(), pattern);
 

@@ -3,6 +3,7 @@ package com.ifc.populationorderdeterminant.service;
 import com.ifc.populationorderdeterminant.dto.PopulationSequence;
 import com.ifc.populationorderdeterminant.dto.RecursiveTables;
 import com.ifc.populationorderdeterminant.entity.Table;
+import com.ifc.populationorderdeterminant.utils.RegexEnum;
 import com.ifc.populationorderdeterminant.utils.RegexUtil;
 import com.ifc.populationorderdeterminant.utils.StringUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -13,8 +14,6 @@ import java.util.*;
 
 @Slf4j
 public class SequenceService {
-
-    private static final String FIND_LEFT_JOIN_PATTERN = "(?i).*?left join %s\\b.*?";
 
     private GraphService graphService = new GraphService();
 
@@ -77,7 +76,7 @@ public class SequenceService {
 
     private Boolean isLeftJoin(Table table1, Table table2) {
         final String viewDefinition = StringUtil.validateSqlScript(table1.getView().getDefinition());
-        final String leftJoinPattern = String.format(FIND_LEFT_JOIN_PATTERN, table2.toString());
+        final String leftJoinPattern = String.format(RegexEnum.FIND_LEFT_JOIN_PATTERN.value(), table2.toString());
         return RegexUtil.isMatched(viewDefinition, leftJoinPattern);
     }
 
