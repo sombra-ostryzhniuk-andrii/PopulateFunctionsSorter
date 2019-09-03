@@ -14,13 +14,13 @@ import java.util.stream.Collectors;
 
 public class FunctionService {
 
-    private Map<String, List<String>> excludedFunctions;
+    private Map<String, Set<Function>> excludedFunctions;
     private static final String HINT = " add the function to a list of excluded functions in the configuration file.";
 
     public FunctionService() {
         this.excludedFunctions = PropertiesProvider.getSchemas()
                 .stream()
-                .collect(Collectors.toMap(schema -> schema, PropertiesProvider::getExcludedFunctions, (a, b) -> b));
+                .collect(Collectors.toMap(schema -> schema, PropertiesProvider::getExcludedFunctionsSet, (a, b) -> b));
     }
 
     public Set<Function> getAllPopulateFunctionsInSchema(String schema) {
@@ -62,7 +62,7 @@ public class FunctionService {
     private boolean isFunctionExcluded(Function function) {
         return excludedFunctions.get(function.getSchema())
                 .stream()
-                .anyMatch(excludedFunction -> Objects.equals(excludedFunction, function.getName()));
+                .anyMatch(excludedFunction -> Objects.equals(excludedFunction, function));
     }
 
     private void validateFunctionDefinition(Function function) {

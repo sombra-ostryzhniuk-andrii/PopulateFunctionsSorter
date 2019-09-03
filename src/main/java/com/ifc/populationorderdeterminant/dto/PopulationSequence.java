@@ -25,7 +25,7 @@ public class PopulationSequence implements Serializable {
 
     @Override
     public String toString() {
-        return table + " : " + sequenceNumber;
+        return table.getFunction() + " : " + sequenceNumber;
     }
 
     @Override

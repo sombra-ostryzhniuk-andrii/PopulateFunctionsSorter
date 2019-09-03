@@ -1,6 +1,7 @@
 package com.ifc.populationorderdeterminant.app;
 
 import com.ifc.populationorderdeterminant.dto.PopulationSequence;
+import com.ifc.populationorderdeterminant.dto.SourceSchemas;
 import com.ifc.populationorderdeterminant.entity.Table;
 import com.ifc.populationorderdeterminant.service.GraphService;
 import com.ifc.populationorderdeterminant.service.SequenceService;
@@ -32,14 +33,14 @@ public class App {
             System.out.println("\nThe population order of the " + schema + " schema:\n");
             printSequence(graph);
 
-            PropertiesProvider.getSourceSchemasMap().forEach((key, sourceSchemas) -> {
+            PropertiesProvider.getSourceSchemasSet().forEach(sourceSchemas -> {
                 DefaultDirectedGraph<Table, DefaultEdge> sourceSchemasGraph = filterGraphBySourceSchemas(graph, sourceSchemas);
                 System.out.println("\nThe population order of the " + schema + " schema for sources: " + sourceSchemas + "\n");
                 printSequence(sourceSchemasGraph);
             });
 
             System.out.println("\n\nExcluded functions in the " + schema + " schema:\n");
-            PropertiesProvider.getExcludedFunctions(schema).forEach(System.out::println);
+            PropertiesProvider.getExcludedFunctionsSet(schema).forEach(System.out::println);
             System.out.println("\n\n");
         });
     }
@@ -57,14 +58,14 @@ public class App {
     }
 
     private static DefaultDirectedGraph<Table, DefaultEdge> filterGraphBySourceSchemas(
-            DefaultDirectedGraph<Table, DefaultEdge> graph, Set<String> sourceSchemas) {
+            DefaultDirectedGraph<Table, DefaultEdge> graph, SourceSchemas sourceSchemas) {
 
         TableService tableService = new TableService();
         GraphService graphService = new GraphService();
 
         Set<Table> tables = graph.vertexSet();
 
-        Set<Table> sourceTables = sourceSchemas
+        Set<Table> sourceTables = sourceSchemas.getSchemas()
                 .stream()
                 .map(sourceSchema -> tableService.filterBySourceSchema(tables, sourceSchema))
                 .flatMap(Set::stream)

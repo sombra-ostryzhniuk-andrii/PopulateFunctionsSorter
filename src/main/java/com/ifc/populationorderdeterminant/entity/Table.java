@@ -61,11 +61,12 @@ public class Table {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Table table = (Table) o;
-        return Objects.equals(name, table.name);
+        return Objects.equals(name, table.name) &&
+                Objects.equals(schema, table.schema);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name);
+        return Objects.hash(name, schema);
     }
 }

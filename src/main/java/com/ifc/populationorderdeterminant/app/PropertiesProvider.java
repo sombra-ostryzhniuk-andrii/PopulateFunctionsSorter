@@ -1,5 +1,7 @@
 package com.ifc.populationorderdeterminant.app;
 
+import com.ifc.populationorderdeterminant.dto.SourceSchemas;
+import com.ifc.populationorderdeterminant.entity.Function;
 import com.ifc.populationorderdeterminant.utils.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -94,8 +96,11 @@ public class PropertiesProvider {
         return new HashSet<>(getRequiredPropertyAsList(propertyName));
     }
 
-    public static List<String> getExcludedFunctions(String schema) {
-        return PropertiesProvider.getPropertyAsList(getExcludeFunctionsProperty(schema));
+    public static Set<Function> getExcludedFunctionsSet(String schema) {
+        return PropertiesProvider.getPropertyAsList(EXCLUDE_FUNCTIONS_PROPERTY + schema)
+                .stream()
+                .map(functionName -> new Function(functionName, schema))
+                .collect(Collectors.toSet());
     }
 
     public static List<String> getSchemas() {
@@ -105,18 +110,13 @@ public class PropertiesProvider {
                 .collect(Collectors.toList());
     }
 
-    public static Map<String, Set<String>> getSourceSchemasMap() {
+    public static Set<SourceSchemas> getSourceSchemasSet() {
         return properties.stringPropertyNames()
                 .stream()
                 .filter(property -> property.contains(SOURCE_SCHEMAS))
                 .map(property -> property.substring(property.lastIndexOf(".") + 1))
-                .collect(Collectors.toMap(
-                        key -> key,
-                        key -> PropertiesProvider.getRequiredPropertyAsSet(SOURCE_SCHEMAS + key),
-                        (a, b) -> b));
+                .map(key -> new SourceSchemas(key, PropertiesProvider.getRequiredPropertyAsSet(SOURCE_SCHEMAS + key)))
+                .collect(Collectors.toSet());
     }
 
-    public static String getExcludeFunctionsProperty(String schema) {
-        return EXCLUDE_FUNCTIONS_PROPERTY + schema;
-    }
 }

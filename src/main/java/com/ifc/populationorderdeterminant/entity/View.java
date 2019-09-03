@@ -1,5 +1,7 @@
 package com.ifc.populationorderdeterminant.entity;
 
+import java.util.Objects;
+
 public class View {
 
     private String name;
@@ -42,5 +44,19 @@ public class View {
     @Override
     public String toString() {
         return schema + "." + name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        View view = (View) o;
+        return Objects.equals(name, view.name) &&
+                Objects.equals(schema, view.schema);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, schema);
     }
 }
