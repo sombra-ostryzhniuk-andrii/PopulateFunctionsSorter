@@ -18,7 +18,7 @@ public class PropertiesProvider {
     private static Properties properties;
     private static final String PROPERTY_ARRAY_DELIMITER = ",";
     private static final String SCHEMAS = "schemas";
-    private static final String SOURCE_SCHEMAS = "source.schemas";
+    private static final String SOURCE_SCHEMAS = "source.schemas.";
     private static final String EXCLUDE_FUNCTIONS_PROPERTY = "exclude.functions.";
 
     private static String configFilePath;
@@ -79,11 +79,19 @@ public class PropertiesProvider {
                     .collect(Collectors.toList());
     }
 
+    public static Set<String> getPropertyAsSet(String propertyName) {
+        return new HashSet<>(getPropertyAsList(propertyName));
+    }
+
     public static List<String> getRequiredPropertyAsList(String propertyName) {
         String property = getRequiredProperty(propertyName);
         return Stream.of(property.split(PROPERTY_ARRAY_DELIMITER))
                 .map(StringUtil::validateString)
                 .collect(Collectors.toList());
+    }
+
+    public static Set<String> getRequiredPropertyAsSet(String propertyName) {
+        return new HashSet<>(getRequiredPropertyAsList(propertyName));
     }
 
     public static List<String> getExcludedFunctions(String schema) {
@@ -97,8 +105,15 @@ public class PropertiesProvider {
                 .collect(Collectors.toList());
     }
 
-    public static List<String> getSourceSchemas() {
-        return PropertiesProvider.getRequiredPropertyAsList(SOURCE_SCHEMAS);
+    public static Map<String, Set<String>> getSourceSchemasMap() {
+        return properties.stringPropertyNames()
+                .stream()
+                .filter(property -> property.contains(SOURCE_SCHEMAS))
+                .map(property -> property.substring(property.lastIndexOf(".") + 1))
+                .collect(Collectors.toMap(
+                        key -> key,
+                        key -> PropertiesProvider.getRequiredPropertyAsSet(SOURCE_SCHEMAS + key),
+                        (a, b) -> b));
     }
 
     public static String getExcludeFunctionsProperty(String schema) {

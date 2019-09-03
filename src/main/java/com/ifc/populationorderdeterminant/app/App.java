@@ -28,14 +28,15 @@ public class App {
 
             Set<Table> tables = tableService.getAllTablesInSchema(schema);
             DefaultDirectedGraph<Table, DefaultEdge> graph = graphService.generateGraph(tables);
-            DefaultDirectedGraph<Table, DefaultEdge> sourceSchemasGraph = filterGraphBySourceSchemas(graph);
 
             System.out.println("\nThe population order of the " + schema + " schema:\n");
             printSequence(graph);
 
-            System.out.println("\nThe population order of the " + schema + " schema for sources: "
-                            + PropertiesProvider.getSourceSchemas() + "\n");
-            printSequence(sourceSchemasGraph);
+            PropertiesProvider.getSourceSchemasMap().forEach((key, sourceSchemas) -> {
+                DefaultDirectedGraph<Table, DefaultEdge> sourceSchemasGraph = filterGraphBySourceSchemas(graph, sourceSchemas);
+                System.out.println("\nThe population order of the " + schema + " schema for sources: " + sourceSchemas + "\n");
+                printSequence(sourceSchemasGraph);
+            });
 
             System.out.println("\n\nExcluded functions in the " + schema + " schema:\n");
             PropertiesProvider.getExcludedFunctions(schema).forEach(System.out::println);
@@ -56,14 +57,14 @@ public class App {
     }
 
     private static DefaultDirectedGraph<Table, DefaultEdge> filterGraphBySourceSchemas(
-            DefaultDirectedGraph<Table, DefaultEdge> graph) {
+            DefaultDirectedGraph<Table, DefaultEdge> graph, Set<String> sourceSchemas) {
 
         TableService tableService = new TableService();
         GraphService graphService = new GraphService();
 
         Set<Table> tables = graph.vertexSet();
 
-        Set<Table> sourceTables = PropertiesProvider.getSourceSchemas()
+        Set<Table> sourceTables = sourceSchemas
                 .stream()
                 .map(sourceSchema -> tableService.filterBySourceSchema(tables, sourceSchema))
                 .flatMap(Set::stream)
