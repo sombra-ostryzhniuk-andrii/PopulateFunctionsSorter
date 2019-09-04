@@ -1,5 +1,6 @@
 package com.ifc.populationorderdeterminant.app;
 
+import com.ifc.populationorderdeterminant.dto.Schema;
 import com.ifc.populationorderdeterminant.dto.SourceSchemas;
 import com.ifc.populationorderdeterminant.entity.Function;
 import com.ifc.populationorderdeterminant.utils.StringUtil;
@@ -19,7 +20,7 @@ public class PropertiesProvider {
 
     private static Properties properties;
     private static final String PROPERTY_ARRAY_DELIMITER = ",";
-    private static final String SCHEMAS = "schemas";
+    private static final String SCHEMA = "schema.";
     private static final String SOURCE_SCHEMAS = "source.schemas.";
     private static final String EXCLUDE_FUNCTIONS_PROPERTY = "exclude.functions.";
 
@@ -103,15 +104,23 @@ public class PropertiesProvider {
                 .collect(Collectors.toSet());
     }
 
-    public static List<String> getSchemas() {
-        return PropertiesProvider.getRequiredPropertyAsList(SCHEMAS)
+    public static Set<Schema> getSchemas() {
+        Set<Schema> schemas = getProperties().stringPropertyNames()
                 .stream()
-                .sorted()
-                .collect(Collectors.toList());
+                .filter(property -> property.contains(SCHEMA))
+                .map(property -> property.substring(property.lastIndexOf(".") + 1))
+                .map(key -> new Schema(PropertiesProvider.getRequiredProperty(SCHEMA + key), key))
+                .collect(Collectors.toSet());
+
+        if (schemas.isEmpty()) {
+            throw new RuntimeException("Schemas are not configured. Please configure property " + SCHEMA +
+                    "<population order> in the configuration file " + configFilePath);
+        }
+        return schemas;
     }
 
     public static Set<SourceSchemas> getSourceSchemasSet() {
-        return properties.stringPropertyNames()
+        return getProperties().stringPropertyNames()
                 .stream()
                 .filter(property -> property.contains(SOURCE_SCHEMAS))
                 .map(property -> property.substring(property.lastIndexOf(".") + 1))

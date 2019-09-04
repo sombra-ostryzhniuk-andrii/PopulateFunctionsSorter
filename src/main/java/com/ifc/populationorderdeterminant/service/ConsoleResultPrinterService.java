@@ -30,7 +30,7 @@ public class ConsoleResultPrinterService implements ResultPrinterService {
 
             System.out.println("\n\nExcluded functions in the " + result.getSchema() + " schema:\n");
 
-            PropertiesProvider.getExcludedFunctionsSet(result.getSchema()).forEach(System.out::println);
+            PropertiesProvider.getExcludedFunctionsSet(result.getSchema().getName()).forEach(System.out::println);
 
             System.out.println("\n\n");
 

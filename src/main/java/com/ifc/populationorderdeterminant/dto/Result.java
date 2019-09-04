@@ -8,7 +8,7 @@ import java.util.Set;
 
 public class Result implements Serializable {
 
-    private String schema;
+    private Schema schema;
     private Set<PopulationSequence> wholeSchemaSequenceSet;
     private Map<SourceSchemas, Set<PopulationSequence>> sourceSchemasSequenceMap;
     private Set<Function> configExcludedFunctions;
@@ -17,15 +17,15 @@ public class Result implements Serializable {
     public Result() {
     }
 
-    public Result(String schema) {
+    public Result(Schema schema) {
         this.schema = schema;
     }
 
-    public String getSchema() {
+    public Schema getSchema() {
         return schema;
     }
 
-    public void setSchema(String schema) {
+    public void setSchema(Schema schema) {
         this.schema = schema;
     }
 

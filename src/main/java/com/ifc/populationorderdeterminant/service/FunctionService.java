@@ -1,6 +1,7 @@
 package com.ifc.populationorderdeterminant.service;
 
 import com.ifc.populationorderdeterminant.app.PropertiesProvider;
+import com.ifc.populationorderdeterminant.dto.Schema;
 import com.ifc.populationorderdeterminant.entity.Function;
 import com.ifc.populationorderdeterminant.repository.FunctionDAO;
 import com.ifc.populationorderdeterminant.utils.RegexEnum;
@@ -20,6 +21,7 @@ public class FunctionService {
     public FunctionService() {
         this.excludedFunctions = PropertiesProvider.getSchemas()
                 .stream()
+                .map(Schema::getName)
                 .collect(Collectors.toMap(schema -> schema, PropertiesProvider::getExcludedFunctionsSet, (a, b) -> b));
     }
 
