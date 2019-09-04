@@ -1,6 +1,7 @@
 package com.ifc.populationorderdeterminant.service;
 
 import com.ifc.populationorderdeterminant.dto.RecursiveTables;
+import com.ifc.populationorderdeterminant.dto.SourceSchemas;
 import com.ifc.populationorderdeterminant.entity.Table;
 import com.ifc.populationorderdeterminant.utils.RegexEnum;
 import com.ifc.populationorderdeterminant.utils.RegexUtil;
@@ -14,27 +15,27 @@ import java.util.stream.Collectors;
 
 public class GraphService {
 
+    private TableService tableService = new TableService();
+
     private Map<Table, Set<Table>> createReferencesMap(Set<Table> tables) {
-        Map<Table, Set<Table>> referencesMap = new HashMap<>();
+        return tables.parallelStream()
+                .collect(Collectors.toMap(table -> table, table -> getReferencesSet(table, tables), (a, b) -> b));
+    }
 
-        tables.parallelStream().forEach(table -> {
+    private Set<Table> getReferencesSet(Table tableToCheck, Set<Table> tables) {
+        Set<Table> dependentTables = new HashSet<>();
+        
+        tables.forEach(table -> {
 
-            Set<Table> dependentTables = new HashSet<>();
+            final String viewDefinition = table.getView().getDefinition();
+            final String pattern = String.format(RegexEnum.FIND_TABLE_NAME_PATTERN.value(), tableToCheck.toString());
 
-            tables.forEach(innerTable -> {
-
-                final String viewDefinition = innerTable.getView().getDefinition();
-                final String pattern = String.format(RegexEnum.FIND_TABLE_NAME_PATTERN.value(), table.toString());
-
-                if (!table.equals(innerTable) && RegexUtil.isMatched(viewDefinition, pattern)) {
-                    dependentTables.add(innerTable);
-                }
-            });
-
-            referencesMap.put(table, dependentTables);
+            if (!tableToCheck.equals(table) && RegexUtil.isMatched(viewDefinition, pattern)) {
+                dependentTables.add(table);
+            }
         });
-
-        return referencesMap;
+        
+        return dependentTables;
     }
 
     public DefaultDirectedGraph<Table, DefaultEdge> generateGraph(Set<Table> tables) {
@@ -92,7 +93,7 @@ public class GraphService {
         return childrenMap;
     }
 
-    public Set<Table> getAllParents(DefaultDirectedGraph<Table, DefaultEdge> graph, Table vertex) {
+    private Set<Table> getAllParents(DefaultDirectedGraph<Table, DefaultEdge> graph, Table vertex) {
         Set<Table> parentsSet = new HashSet<>();
         EdgeReversedGraph<Table, DefaultEdge> reversedGraph = new EdgeReversedGraph<>(graph);
         BreadthFirstIterator<Table, DefaultEdge> breadthFirstIterator = new BreadthFirstIterator<>(reversedGraph, vertex);
@@ -107,7 +108,7 @@ public class GraphService {
         return parentsSet;
     }
 
-    public Set<Table> getAllChildren(DefaultDirectedGraph<Table, DefaultEdge> graph, Table vertex) {
+    private Set<Table> getAllChildren(DefaultDirectedGraph<Table, DefaultEdge> graph, Table vertex) {
         Set<Table> childrenSet = new HashSet<>();
         BreadthFirstIterator<Table, DefaultEdge> breadthFirstIterator = new BreadthFirstIterator<>(graph, vertex);
 
@@ -150,6 +151,54 @@ public class GraphService {
         }));
 
         return recursiveTables;
+    }
+
+    public DefaultDirectedGraph<Table, DefaultEdge> getChildrenGraphForSourceSchemas (
+            DefaultDirectedGraph<Table, DefaultEdge> wholeSchemaGraph,
+            SourceSchemas sourceSchemas) {
+
+        Set<Table> tables = wholeSchemaGraph.vertexSet();
+
+        Set<Table> primaryTables = sourceSchemas.getSchemas()
+                .stream()
+                .map(sourceSchema -> tableService.filterBySourceSchema(tables, sourceSchema))
+                .flatMap(Set::stream)
+                .collect(Collectors.toSet());
+
+        return getChildrenGraph(wholeSchemaGraph, primaryTables);
+    }
+
+    public DefaultDirectedGraph<Table, DefaultEdge> getChildrenGraphForSourceTables (
+            DefaultDirectedGraph<Table, DefaultEdge> wholeSchemaGraph,
+            Set<Table> sourceTables) {
+
+        Set<Table> tables = wholeSchemaGraph.vertexSet();
+
+        Set<Table> primaryTables = sourceTables
+                .stream()
+                .map(table -> getReferencesSet(table, tables))
+                .flatMap(Set::stream)
+                .collect(Collectors.toSet());
+
+        return getChildrenGraph(wholeSchemaGraph, primaryTables);
+    }
+
+    private DefaultDirectedGraph<Table, DefaultEdge> getChildrenGraph(
+            DefaultDirectedGraph<Table, DefaultEdge> wholeSchemaGraph,
+            Set<Table> primaryTables) {
+
+        Set<Table> allTables = wholeSchemaGraph.vertexSet();
+
+        Set<Table> childrenTables = new HashSet<>(primaryTables);
+        primaryTables.forEach(table -> childrenTables.addAll(getAllChildren(wholeSchemaGraph, table)));
+
+        DefaultDirectedGraph<Table, DefaultEdge> childrenGraph = (DefaultDirectedGraph<Table, DefaultEdge>) wholeSchemaGraph.clone();
+
+        allTables.stream()
+                .filter(table -> !childrenTables.contains(table))
+                .forEach(childrenGraph::removeVertex);
+
+        return childrenGraph;
     }
 
 }

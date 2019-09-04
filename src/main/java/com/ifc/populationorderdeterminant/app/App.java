@@ -34,7 +34,9 @@ public class App {
             printSequence(graph);
 
             PropertiesProvider.getSourceSchemasSet().forEach(sourceSchemas -> {
-                DefaultDirectedGraph<Table, DefaultEdge> sourceSchemasGraph = filterGraphBySourceSchemas(graph, sourceSchemas);
+                DefaultDirectedGraph<Table, DefaultEdge> sourceSchemasGraph =
+                        graphService.getChildrenGraphForSourceSchemas(graph, sourceSchemas);
+
                 System.out.println("\nThe population order of the " + schema + " schema for sources: " + sourceSchemas + "\n");
                 printSequence(sourceSchemasGraph);
             });
@@ -55,32 +57,6 @@ public class App {
                 .collect(Collectors.toList());
 
         sequenceList.forEach(System.out::println);
-    }
-
-    private static DefaultDirectedGraph<Table, DefaultEdge> filterGraphBySourceSchemas(
-            DefaultDirectedGraph<Table, DefaultEdge> graph, SourceSchemas sourceSchemas) {
-
-        TableService tableService = new TableService();
-        GraphService graphService = new GraphService();
-
-        Set<Table> tables = graph.vertexSet();
-
-        Set<Table> sourceTables = sourceSchemas.getSchemas()
-                .stream()
-                .map(sourceSchema -> tableService.filterBySourceSchema(tables, sourceSchema))
-                .flatMap(Set::stream)
-                .collect(Collectors.toSet());
-
-        Set<Table> filteredTables = new HashSet<>(sourceTables);
-        sourceTables.forEach(table -> filteredTables.addAll(graphService.getAllChildren(graph, table)));
-
-        DefaultDirectedGraph<Table, DefaultEdge> filteredGraph = (DefaultDirectedGraph<Table, DefaultEdge>) graph.clone();
-
-        tables.stream()
-                .filter(table -> !filteredTables.contains(table))
-                .forEach(filteredGraph::removeVertex);
-
-        return filteredGraph;
     }
 
     static String[] getArguments() {
