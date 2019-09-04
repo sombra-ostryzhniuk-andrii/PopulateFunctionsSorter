@@ -3,6 +3,7 @@ package com.ifc.populationorderdeterminant.service;
 import com.ifc.populationorderdeterminant.dto.PopulationSequence;
 import com.ifc.populationorderdeterminant.dto.RecursiveTables;
 import com.ifc.populationorderdeterminant.entity.Table;
+import com.ifc.populationorderdeterminant.service.factories.SequenceFactory;
 import com.ifc.populationorderdeterminant.utils.RegexEnum;
 import com.ifc.populationorderdeterminant.utils.RegexUtil;
 import com.ifc.populationorderdeterminant.utils.StringUtil;

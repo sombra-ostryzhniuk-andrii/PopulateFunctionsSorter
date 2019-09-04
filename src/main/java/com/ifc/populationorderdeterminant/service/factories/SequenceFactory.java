@@ -1,4 +1,4 @@
-package com.ifc.populationorderdeterminant.service;
+package com.ifc.populationorderdeterminant.service.factories;
 
 import com.ifc.populationorderdeterminant.dto.PopulationSequence;
 import com.ifc.populationorderdeterminant.entity.Table;
