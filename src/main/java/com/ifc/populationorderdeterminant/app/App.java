@@ -1,6 +1,6 @@
 package com.ifc.populationorderdeterminant.app;
 
-import com.ifc.populationorderdeterminant.dto.Result;
+import com.ifc.populationorderdeterminant.dto.PopulationSequenceResult;
 import com.ifc.populationorderdeterminant.dto.Schema;
 import com.ifc.populationorderdeterminant.service.ConsoleResultPrinterService;
 import com.ifc.populationorderdeterminant.service.SequenceService;
@@ -23,7 +23,7 @@ public class App {
 
             System.out.println("Process is running...");
 
-            List<Result> results = new ArrayList<>();
+            List<PopulationSequenceResult> results = new ArrayList<>();
 
             PropertiesProvider.getSchemas().stream()
                     .sorted(Comparator.comparing(Schema::getPopulationOrder))

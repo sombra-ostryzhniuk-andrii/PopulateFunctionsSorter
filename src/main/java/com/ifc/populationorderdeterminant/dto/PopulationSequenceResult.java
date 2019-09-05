@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.Map;
 import java.util.Set;
 
-public class Result implements Serializable {
+public class PopulationSequenceResult implements Serializable {
 
     private Schema schema;
     private Set<PopulationSequence> wholeSchemaSequenceSet;
@@ -14,10 +14,7 @@ public class Result implements Serializable {
     private Set<Function> configExcludedFunctions;
     private Set<Function> runtimeExcludedFunctions;
 
-    public Result() {
-    }
-
-    public Result(Schema schema) {
+    public PopulationSequenceResult(Schema schema) {
         this.schema = schema;
     }
 

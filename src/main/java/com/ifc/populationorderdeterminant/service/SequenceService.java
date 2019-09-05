@@ -19,8 +19,8 @@ public class SequenceService {
     private GraphService graphService = new GraphService();
     private TableService tableService = new TableService();
 
-    public Result getPopulationSequenceResult(Schema schema, List<Result> results) {
-        Result result = new Result(schema);
+    public PopulationSequenceResult getPopulationSequenceResult(Schema schema, List<PopulationSequenceResult> results) {
+        PopulationSequenceResult result = new PopulationSequenceResult(schema);
 
         Set<Table> tables = tableService.getAllTablesInSchema(schema.getName());
         DefaultDirectedGraph<Table, DefaultEdge> graph = graphService.generateGraph(tables);

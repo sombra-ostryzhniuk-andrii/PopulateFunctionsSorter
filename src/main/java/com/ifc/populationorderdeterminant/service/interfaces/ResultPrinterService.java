@@ -1,11 +1,11 @@
 package com.ifc.populationorderdeterminant.service.interfaces;
 
-import com.ifc.populationorderdeterminant.dto.Result;
+import com.ifc.populationorderdeterminant.dto.PopulationSequenceResult;
 
 import java.util.List;
 
 public interface ResultPrinterService {
 
-    void print(List<Result> results);
+    void print(List<PopulationSequenceResult> populationSequenceResults);
 
 }

@@ -2,7 +2,7 @@ package com.ifc.populationorderdeterminant.service;
 
 import com.ifc.populationorderdeterminant.app.PropertiesProvider;
 import com.ifc.populationorderdeterminant.dto.PopulationSequence;
-import com.ifc.populationorderdeterminant.dto.Result;
+import com.ifc.populationorderdeterminant.dto.PopulationSequenceResult;
 import com.ifc.populationorderdeterminant.service.interfaces.ResultPrinterService;
 
 import java.util.Comparator;
@@ -12,7 +12,7 @@ import java.util.Set;
 public class ConsoleResultPrinterService implements ResultPrinterService {
 
     @Override
-    public void print(List<Result> results) {
+    public void print(List<PopulationSequenceResult> results) {
         results.forEach(result -> {
 
             System.out.println("\nThe population order of the whole " + result.getSchema() + " schema:\n");
