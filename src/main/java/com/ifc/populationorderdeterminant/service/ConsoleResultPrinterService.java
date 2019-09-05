@@ -1,9 +1,11 @@
 package com.ifc.populationorderdeterminant.service;
 
-import com.ifc.populationorderdeterminant.providers.PropertiesProvider;
+import com.ifc.populationorderdeterminant.entity.Function;
+import com.ifc.populationorderdeterminant.providers.ExcludedFunctionsProvider;
 import com.ifc.populationorderdeterminant.dto.PopulationSequence;
 import com.ifc.populationorderdeterminant.dto.PopulationSequenceResult;
 import com.ifc.populationorderdeterminant.service.interfaces.ResultPrinterService;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Comparator;
 import java.util.List;
@@ -27,13 +29,10 @@ public class ConsoleResultPrinterService implements ResultPrinterService {
                 printPopulationSequence(populationSequenceSet);
             });
 
-
-            System.out.println("\n\nExcluded functions in the " + result.getSchema() + " schema:\n");
-
-            PropertiesProvider.getExcludedFunctionsSet(result.getSchema().getName()).forEach(System.out::println);
+            printConfigExcludedFunctions(result.getSchema().getName());
+            printRuntimeExcludedFunctions(result.getSchema().getName());
 
             System.out.println("\n\n");
-
         });
     }
 
@@ -41,5 +40,25 @@ public class ConsoleResultPrinterService implements ResultPrinterService {
         populationSequenceSet.stream()
                 .sorted(Comparator.comparing(PopulationSequence::getSequenceNumber))
                 .forEach(System.out::println);
+    }
+
+    private void printConfigExcludedFunctions(String schema) {
+
+        Set<Function> excludedFunctions = ExcludedFunctionsProvider.getConfigExcludedFunctionsBySchema(schema);
+
+        if (!CollectionUtils.isEmpty(excludedFunctions)) {
+            System.out.println("\n\nExcluded functions by a config file in the schema " + schema + ":\n");
+            excludedFunctions.forEach(System.out::println);
+        }
+    }
+
+    private void printRuntimeExcludedFunctions(String schema) {
+
+        Set<Function> excludedFunctions = ExcludedFunctionsProvider.getRuntimeExcludedFunctionsBySchema(schema);
+
+        if (!CollectionUtils.isEmpty(excludedFunctions)) {
+            System.out.println("\nExcluded functions cannot be analyzed in the schema " + schema + ":\n");
+            excludedFunctions.forEach(System.out::println);
+        }
     }
 }
