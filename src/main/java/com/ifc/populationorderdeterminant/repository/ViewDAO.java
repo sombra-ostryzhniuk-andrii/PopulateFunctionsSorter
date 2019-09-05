@@ -3,7 +3,7 @@ package com.ifc.populationorderdeterminant.repository;
 import com.ifc.populationorderdeterminant.entity.View;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 
-import static com.ifc.populationorderdeterminant.repository.providers.JdbcProvider.getJdbcTemplate;
+import static com.ifc.populationorderdeterminant.providers.JdbcProvider.getJdbcTemplate;
 
 public class ViewDAO {
 

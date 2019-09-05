@@ -2,6 +2,7 @@ package com.ifc.populationorderdeterminant.app;
 
 import com.ifc.populationorderdeterminant.dto.PopulationSequenceResult;
 import com.ifc.populationorderdeterminant.dto.Schema;
+import com.ifc.populationorderdeterminant.providers.PropertiesProvider;
 import com.ifc.populationorderdeterminant.service.ConsoleResultPrinterService;
 import com.ifc.populationorderdeterminant.service.SequenceService;
 import com.ifc.populationorderdeterminant.service.interfaces.ResultPrinterService;
@@ -41,7 +42,7 @@ public class App {
         }
     }
 
-    static String[] getArguments() {
+    public static String[] getArguments() {
         if (arguments == null) {
             throw new RuntimeException("Arguments have not been initialized");
         }

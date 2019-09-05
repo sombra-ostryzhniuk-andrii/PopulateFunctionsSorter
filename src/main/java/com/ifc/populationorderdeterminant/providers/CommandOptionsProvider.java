@@ -1,4 +1,6 @@
-package com.ifc.populationorderdeterminant.app;
+package com.ifc.populationorderdeterminant.providers;
+
+import com.ifc.populationorderdeterminant.app.App;
 
 import java.util.*;
 

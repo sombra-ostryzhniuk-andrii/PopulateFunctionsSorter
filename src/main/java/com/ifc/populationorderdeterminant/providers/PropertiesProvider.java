@@ -1,4 +1,4 @@
-package com.ifc.populationorderdeterminant.app;
+package com.ifc.populationorderdeterminant.providers;
 
 import com.ifc.populationorderdeterminant.dto.Schema;
 import com.ifc.populationorderdeterminant.dto.SourceSchemas;

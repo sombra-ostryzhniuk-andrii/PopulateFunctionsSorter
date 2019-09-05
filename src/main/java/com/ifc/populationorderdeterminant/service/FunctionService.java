@@ -1,7 +1,6 @@
 package com.ifc.populationorderdeterminant.service;
 
-import com.ifc.populationorderdeterminant.app.PropertiesProvider;
-import com.ifc.populationorderdeterminant.dto.Schema;
+import com.ifc.populationorderdeterminant.providers.ExcludedFunctionsProvider;
 import com.ifc.populationorderdeterminant.entity.Function;
 import com.ifc.populationorderdeterminant.repository.FunctionDAO;
 import com.ifc.populationorderdeterminant.utils.RegexEnum;
@@ -15,15 +14,7 @@ import java.util.stream.Collectors;
 
 public class FunctionService {
 
-    private Map<String, Set<Function>> excludedFunctions;
     private static final String HINT = " add the function to a list of excluded functions in the configuration file.";
-
-    public FunctionService() {
-        this.excludedFunctions = PropertiesProvider.getSchemas()
-                .stream()
-                .map(Schema::getName)
-                .collect(Collectors.toMap(schema -> schema, PropertiesProvider::getExcludedFunctionsSet, (a, b) -> b));
-    }
 
     public Set<Function> getAllPopulateFunctionsInSchema(String schema) {
         List<Function> functions = FunctionDAO.getAllPopulateFunctionsInSchema(schema);
@@ -62,7 +53,7 @@ public class FunctionService {
     }
 
     private boolean isFunctionExcluded(Function function) {
-        return excludedFunctions.get(function.getSchema())
+        return ExcludedFunctionsProvider.getAllExcludedFunctions()
                 .stream()
                 .anyMatch(excludedFunction -> Objects.equals(excludedFunction, function));
     }

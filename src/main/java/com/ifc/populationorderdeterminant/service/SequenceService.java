@@ -1,6 +1,6 @@
 package com.ifc.populationorderdeterminant.service;
 
-import com.ifc.populationorderdeterminant.app.PropertiesProvider;
+import com.ifc.populationorderdeterminant.providers.PropertiesProvider;
 import com.ifc.populationorderdeterminant.dto.*;
 import com.ifc.populationorderdeterminant.entity.Table;
 import com.ifc.populationorderdeterminant.service.factories.SequenceFactory;

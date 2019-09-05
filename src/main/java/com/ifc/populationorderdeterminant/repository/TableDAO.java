@@ -1,6 +1,6 @@
 package com.ifc.populationorderdeterminant.repository;
 
-import static com.ifc.populationorderdeterminant.repository.providers.JdbcProvider.getJdbcTemplate;
+import static com.ifc.populationorderdeterminant.providers.JdbcProvider.getJdbcTemplate;
 
 public class TableDAO {
 

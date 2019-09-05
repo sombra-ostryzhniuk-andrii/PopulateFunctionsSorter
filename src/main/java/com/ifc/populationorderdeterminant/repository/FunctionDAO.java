@@ -5,7 +5,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 
 import java.util.List;
 
-import static com.ifc.populationorderdeterminant.repository.providers.JdbcProvider.getJdbcTemplate;
+import static com.ifc.populationorderdeterminant.providers.JdbcProvider.getJdbcTemplate;
 
 public class FunctionDAO {
 

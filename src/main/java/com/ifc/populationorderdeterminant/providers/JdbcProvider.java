@@ -1,6 +1,5 @@
-package com.ifc.populationorderdeterminant.repository.providers;
+package com.ifc.populationorderdeterminant.providers;
 
-import com.ifc.populationorderdeterminant.app.PropertiesProvider;
 import org.postgresql.ds.PGSimpleDataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import javax.sql.DataSource;

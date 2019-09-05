@@ -16,8 +16,7 @@ public class Schema implements Serializable {
             this.populationOrder = Integer.valueOf(populationOrder);
         } catch (NumberFormatException e) {
             throw new RuntimeException("The population order \"" + populationOrder + "\" of the schema " + name +
-                    " is not a number. This property should be a number. Please, fix this in the configuration file" +
-                    " and try again.", e);
+                    " should be an integer. Please, fix this in the configuration file and try again.", e);
         }
     }
 
