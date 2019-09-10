@@ -3,6 +3,7 @@ package com.ifc.populationorderdeterminant.providers;
 import com.ifc.populationorderdeterminant.entity.Function;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -57,5 +58,18 @@ public class ExcludedFunctionsProvider {
 
     public static void addRuntimeExcludedFunction(Function function) {
         runtimeExcludedFunctions.add(function);
+    }
+
+    public static void addRuntimeExcludedFunction(Function function, String logMessage) {
+        if (!runtimeExcludedFunctions.contains(function)) {
+            addRuntimeExcludedFunction(function);
+            System.err.println("The function " + function + " is excluded, the result may be incorrect. " + logMessage);
+        }
+    }
+
+    public static boolean isFunctionExcluded(Function function) {
+        return getAllExcludedFunctions()
+                .stream()
+                .anyMatch(excludedFunction -> Objects.equals(excludedFunction, function));
     }
 }

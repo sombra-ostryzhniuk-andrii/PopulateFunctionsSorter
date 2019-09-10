@@ -1,5 +1,6 @@
 package com.ifc.populationorderdeterminant.service;
 
+import com.ifc.populationorderdeterminant.providers.ExcludedFunctionsProvider;
 import com.ifc.populationorderdeterminant.providers.PropertiesProvider;
 import com.ifc.populationorderdeterminant.dto.*;
 import com.ifc.populationorderdeterminant.entity.Table;
@@ -74,7 +75,9 @@ public class SequenceService {
             return false;
         });
 
+        int previousTablesSize = parentsMap.size();
         while (parentsMap.size() > 0) {
+
             parentsMap.entrySet().removeIf(entry -> {
                 Table table = entry.getKey();
                 Set<Table> parentsSet = entry.getValue();
@@ -85,28 +88,39 @@ public class SequenceService {
                 }
                 return false;
             });
+
+            if (previousTablesSize == parentsMap.size()) {
+                throw new RuntimeException("Unable to analyze the population order. " +
+                        "The population chain is missing some table or recursion has occurred. " +
+                        "Please, check the excluded functions and the database structure and try again.");
+            }
+            previousTablesSize = parentsMap.size();
         }
 
         return sequenceFactory.getSequenceSet();
     }
 
-    private void prioritizeRecursiveTables(Set<RecursiveTables> recursiveTables, Map<Table, Set<Table>> tablesSet) {
+    private void prioritizeRecursiveTables(Set<RecursiveTables> recursiveTables, Map<Table, Set<Table>> tablesMap) {
 
         recursiveTables.forEach(recursiveTable -> {
 
             if (isLeftJoin(recursiveTable.getRecursiveTable(), recursiveTable.getRecursiveAt())) {
 
-                tablesSet.get(recursiveTable.getRecursiveTable()).remove(recursiveTable.getRecursiveAt());
+                tablesMap.get(recursiveTable.getRecursiveTable()).remove(recursiveTable.getRecursiveAt());
 
             } else if (isLeftJoin(recursiveTable.getRecursiveAt(), recursiveTable.getRecursiveTable())) {
 
-                tablesSet.get(recursiveTable.getRecursiveAt()).remove(recursiveTable.getRecursiveTable());
+                tablesMap.get(recursiveTable.getRecursiveAt()).remove(recursiveTable.getRecursiveTable());
 
             } else {
-                throw new RuntimeException("Tables " + recursiveTable.getRecursiveTable() + " and " + recursiveTable.getRecursiveAt() +
-                        " cause a recursion and both are joined not by a LEFT JOIN. Population is not possible." +
-                        " Please, add one of their functions to a list of excluded functions in the configuration file " +
-                        " or fix the DB structure and try again.");
+                String message = "Tables " + recursiveTable.getRecursiveTable() + " and " + recursiveTable.getRecursiveAt() +
+                        " cause a recursion and both are joined not by a LEFT JOIN. Population is not possible.";
+
+                ExcludedFunctionsProvider.addRuntimeExcludedFunction(
+                        recursiveTable.getRecursiveTable().getFunction(),
+                        message);
+
+                tablesMap.remove(recursiveTable.getRecursiveTable());
             }
         });
     }

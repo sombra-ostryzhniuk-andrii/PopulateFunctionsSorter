@@ -38,7 +38,7 @@ public class App {
             printerService.print(results);
 
         } catch (Exception e) {
-            log.error(e.getMessage());
+            System.err.println("Error: " + e.getMessage());
         }
     }
 

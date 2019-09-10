@@ -57,7 +57,7 @@ public class ConsoleResultPrinterService implements ResultPrinterService {
         Set<Function> excludedFunctions = ExcludedFunctionsProvider.getRuntimeExcludedFunctionsBySchema(schema);
 
         if (!CollectionUtils.isEmpty(excludedFunctions)) {
-            System.out.println("\nExcluded functions cannot be analyzed in the schema " + schema + ":\n");
+            System.out.println("\nUnable to analyze functions in the schema " + schema + ":\n");
             excludedFunctions.forEach(System.out::println);
         }
     }
