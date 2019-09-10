@@ -5,6 +5,7 @@ import com.ifc.populationorderdeterminant.dto.Schema;
 import com.ifc.populationorderdeterminant.providers.PropertiesProvider;
 import com.ifc.populationorderdeterminant.service.ConsoleResultPrinterService;
 import com.ifc.populationorderdeterminant.service.SequenceService;
+import com.ifc.populationorderdeterminant.service.XlsxResultPrinterService;
 import com.ifc.populationorderdeterminant.service.interfaces.ResultPrinterService;
 
 import java.util.*;
@@ -18,7 +19,8 @@ public class App {
             arguments = args;
 
             SequenceService sequenceService = new SequenceService();
-            ResultPrinterService printerService = new ConsoleResultPrinterService();
+            ResultPrinterService consolePrinterService = new ConsoleResultPrinterService();
+            XlsxResultPrinterService xlsxPrinterService = new XlsxResultPrinterService();
 
             System.out.println("Process is running...");
 
@@ -33,11 +35,22 @@ public class App {
                         results.add(sequenceService.getPopulationSequenceResult(schema, results));
                     });
 
-            printerService.print(results);
+            consolePrinterService.print(results);
+
+            try {
+                xlsxPrinterService.print(results);
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
+                System.out.println("Printing result to console...");
+
+                consolePrinterService.print(results);
+            }
 
         } catch (Exception e) {
             System.err.println("Error: " + e.getMessage());
         }
+
+        System.out.println("Finished successfully!");
     }
 
     public static String[] getArguments() {

@@ -49,6 +49,14 @@
             <artifactId>jgrapht-core</artifactId>
             <version>1.3.0</version>
         </dependency>
+
+        <!-- xlsx -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>4.1.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>

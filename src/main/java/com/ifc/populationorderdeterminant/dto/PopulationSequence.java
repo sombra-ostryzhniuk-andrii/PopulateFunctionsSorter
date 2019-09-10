@@ -5,7 +5,7 @@ import com.ifc.populationorderdeterminant.entity.Table;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class PopulationSequence implements Serializable {
+public class PopulationSequence implements Serializable, Comparable<PopulationSequence> {
 
     private Table table;
     private Integer sequenceNumber;
@@ -39,5 +39,11 @@ public class PopulationSequence implements Serializable {
     @Override
     public int hashCode() {
         return table.hashCode();
+    }
+
+
+    @Override
+    public int compareTo(PopulationSequence other) {
+        return Integer.compare(this.sequenceNumber, other.sequenceNumber);
     }
 }

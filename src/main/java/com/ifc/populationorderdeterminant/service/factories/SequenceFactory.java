@@ -3,13 +3,13 @@ package com.ifc.populationorderdeterminant.service.factories;
 import com.ifc.populationorderdeterminant.dto.PopulationSequence;
 import com.ifc.populationorderdeterminant.entity.Table;
 
-import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 public class SequenceFactory {
 
-    private final Set<PopulationSequence> sequenceSet = new HashSet<>();
+    private final TreeSet<PopulationSequence> sequenceSet = new TreeSet<>();
     private int sequenceCounter = 1;
 
     public void addToSequence(Table table) {
@@ -17,7 +17,7 @@ public class SequenceFactory {
         sequenceCounter++;
     }
 
-    public Set<PopulationSequence> getSequenceSet() {
+    public TreeSet<PopulationSequence> getSequenceSet() {
         return sequenceSet;
     }
 

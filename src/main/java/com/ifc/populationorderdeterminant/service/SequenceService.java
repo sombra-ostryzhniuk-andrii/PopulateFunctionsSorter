@@ -26,7 +26,7 @@ public class SequenceService {
 
         result.setWholeSchemaSequenceSet(getPopulationSequenceSet(graph));
 
-        Map<SourceSchemas, Set<PopulationSequence>> sourceSchemasSequenceMap = new HashMap<>();
+        Map<SourceSchemas, TreeSet<PopulationSequence>> sourceSchemasSequenceMap = new HashMap<>();
 
         PropertiesProvider.getSourceSchemasSet().forEach(sourceSchemas -> {
 
@@ -54,7 +54,7 @@ public class SequenceService {
         return result;
     }
 
-    private Set<PopulationSequence> getPopulationSequenceSet(DefaultDirectedGraph<Table, DefaultEdge> graph) {
+    private TreeSet<PopulationSequence> getPopulationSequenceSet(DefaultDirectedGraph<Table, DefaultEdge> graph) {
         Map<Table, Set<Table>> parentsMap = graphService.getParentsMap(graph);
         Set<RecursiveTables> recursiveTables = graphService.getRecursiveTables(graph);
 
