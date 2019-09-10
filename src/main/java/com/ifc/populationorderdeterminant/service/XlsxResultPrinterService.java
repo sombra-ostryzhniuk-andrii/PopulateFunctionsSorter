@@ -2,6 +2,7 @@ package com.ifc.populationorderdeterminant.service;
 
 import com.ifc.populationorderdeterminant.dto.PopulationSequence;
 import com.ifc.populationorderdeterminant.dto.PopulationSequenceResult;
+import com.ifc.populationorderdeterminant.dto.SourceSchemas;
 import com.ifc.populationorderdeterminant.providers.PropertiesProvider;
 import com.ifc.populationorderdeterminant.service.interfaces.ResultPrinterService;
 import org.apache.poi.hssf.usermodel.HSSFFont;
@@ -15,7 +16,9 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 public class XlsxResultPrinterService implements ResultPrinterService {
 
@@ -36,23 +39,34 @@ public class XlsxResultPrinterService implements ResultPrinterService {
             sheet.setColumnWidth(0, 12000);
             sheet.setColumnWidth(1, 5000);
 
-            currentRow = buildWholeSchemaSequenceHeader(workbook, sheet, result, currentRow);
+            String wholeSchemaHeaderValue = "The population order of the whole " + result.getSchema() + " schema";
+            currentRow = buildPopulationSequenceHeader(workbook, sheet, currentRow, wholeSchemaHeaderValue);
             currentRow = buildPopulationSequence(result.getWholeSchemaSequenceSet(), sheet, currentRow);
 
+            for (Map.Entry<SourceSchemas, TreeSet<PopulationSequence>> entry : result.getSourceSchemasSequenceMap().entrySet()) {
+                SourceSchemas sourceSchemas = entry.getKey();
+                TreeSet<PopulationSequence> populationSequenceSet = entry.getValue();
+
+                currentRow = currentRow + 2;
+
+                String sourceSchemaHeaderValue = "The population order of sources: " + sourceSchemas;
+                currentRow = buildPopulationSequenceHeader(workbook, sheet, currentRow, sourceSchemaHeaderValue);
+                currentRow = buildPopulationSequence(populationSequenceSet, sheet, currentRow);
+            }
         }
 
         write(workbook);
     }
 
-    private int buildWholeSchemaSequenceHeader(Workbook workbook,
-                                               Sheet sheet,
-                                               PopulationSequenceResult result,
-                                               int currentRow) {
+    private int buildPopulationSequenceHeader(Workbook workbook,
+                                              Sheet sheet,
+                                              int currentRow,
+                                              String headerValue) {
 
         Row firstHeader = sheet.createRow(currentRow);
         Cell firstHeaderCell = firstHeader.createCell(0);
         firstHeaderCell.setCellStyle(getFirstHeaderStyle(workbook));
-        firstHeaderCell.setCellValue("The population order of the whole " + result.getSchema() + " schema");
+        firstHeaderCell.setCellValue(headerValue);
         sheet.addMergedRegion(new CellRangeAddress(currentRow, currentRow,0,1));
 
         Row secondHeader = sheet.createRow(currentRow + 1);
