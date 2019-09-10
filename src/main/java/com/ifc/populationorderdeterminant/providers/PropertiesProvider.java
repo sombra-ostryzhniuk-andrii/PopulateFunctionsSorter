@@ -4,7 +4,6 @@ import com.ifc.populationorderdeterminant.dto.Schema;
 import com.ifc.populationorderdeterminant.dto.SourceSchemas;
 import com.ifc.populationorderdeterminant.entity.Function;
 import com.ifc.populationorderdeterminant.utils.StringUtil;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.FileInputStream;
@@ -15,7 +14,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@Slf4j
 public class PropertiesProvider {
 
     private static Properties properties;
@@ -57,7 +55,7 @@ public class PropertiesProvider {
     public static String getProperty(String propertyName) {
         String property = getProperties().getProperty(propertyName);
         if (property == null) {
-            log.warn("Unable to find property '" + propertyName + "' in the configuration file " + configFilePath);
+            System.err.println("Unable to find property '" + propertyName + "' in the configuration file " + configFilePath);
         }
         return property;
     }

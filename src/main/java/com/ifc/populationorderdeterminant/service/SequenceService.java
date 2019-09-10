@@ -8,13 +8,11 @@ import com.ifc.populationorderdeterminant.service.factories.SequenceFactory;
 import com.ifc.populationorderdeterminant.utils.RegexEnum;
 import com.ifc.populationorderdeterminant.utils.RegexUtil;
 import com.ifc.populationorderdeterminant.utils.StringUtil;
-import lombok.extern.slf4j.Slf4j;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Slf4j
 public class SequenceService {
 
     private GraphService graphService = new GraphService();

@@ -6,11 +6,9 @@ import com.ifc.populationorderdeterminant.providers.PropertiesProvider;
 import com.ifc.populationorderdeterminant.service.ConsoleResultPrinterService;
 import com.ifc.populationorderdeterminant.service.SequenceService;
 import com.ifc.populationorderdeterminant.service.interfaces.ResultPrinterService;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
 
-@Slf4j
 public class App {
 
     private static String[] arguments;
