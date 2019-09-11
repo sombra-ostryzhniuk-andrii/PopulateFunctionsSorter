@@ -4,11 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.ifc</groupId>
-    <artifactId>PopulationOrderDeterminant</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <artifactId>myelinflow</artifactId>
+    <version>1.0</version>
     <packaging>jar</packaging>
-    <name>PopulationOrderDeterminant</name>
-    <description>PopulationOrderDeterminant Project</description>
+    <name>myelinflow</name>
+    <description>MyelinFlow Project</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -82,7 +82,7 @@
                     <!-- MainClass in mainfest make a executable jar -->
                     <archive>
                         <manifest>
-                            <mainClass>com.ifc.populationorderdeterminant.app.App</mainClass>
+                            <mainClass>com.ifc.myelinflow.app.App</mainClass>
                         </manifest>
                     </archive>
 
