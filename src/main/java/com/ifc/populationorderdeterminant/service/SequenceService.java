@@ -49,7 +49,6 @@ public class SequenceService {
         });
 
         result.setSourceSchemasSequenceMap(sourceSchemasSequenceMap);
-        result.setConfigExcludedFunctions(PropertiesProvider.getExcludedFunctionsSet(schema.getName()));
 
         return result;
     }

@@ -35,14 +35,12 @@ public class App {
                         results.add(sequenceService.getPopulationSequenceResult(schema, results));
                     });
 
-            consolePrinterService.print(results);
-
             try {
                 xlsxPrinterService.print(results);
+                System.out.println("Look for the result in the file: " + xlsxPrinterService.getResultFilePath());
             } catch (Exception e) {
                 System.err.println(e.getMessage());
                 System.out.println("Printing result to console...");
-
                 consolePrinterService.print(results);
             }
 

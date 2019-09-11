@@ -1,6 +1,7 @@
 package com.ifc.populationorderdeterminant.providers;
 
 import com.ifc.populationorderdeterminant.entity.Function;
+import org.springframework.util.CollectionUtils;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -71,5 +72,9 @@ public class ExcludedFunctionsProvider {
         return getAllExcludedFunctions()
                 .stream()
                 .anyMatch(excludedFunction -> Objects.equals(excludedFunction, function));
+    }
+
+    public static boolean isExcludedFunctionsExist() {
+        return !CollectionUtils.isEmpty(getAllExcludedFunctions());
     }
 }
