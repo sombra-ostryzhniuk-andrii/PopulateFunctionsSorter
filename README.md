@@ -46,13 +46,13 @@ See *config-example.properties* file for the example.
 *(required)*
 
 
-**source.schemas.&lt;index>** - configure this property to get population order for specific raw schemas. Value is a single raw schema or list of raw schemas separated by ',' or ',\' to go to the next line. You can have any number of property source.schemas but with different indexes. *&lt;index>* -  is any integer value. For example:
+**source.schemas.&lt;index>** - configure this property to get population order for specific raw schemas. Value is a single raw schema or list of raw schemas separated by ',' or ',\\' to go to the next line. You can have any number of property source.schemas but with different indexes. *&lt;index>* -  is any integer value. For example:
 
 	source.schemas.0=gisraw,ctrakraw
 	source.schemas.1=nsuiteraw
 *(optional)*
 
-**exclude.functions.&lt;schema>** - excluded functions. Functions configured in this property will be excluded from analyzation and from the result order. Put here all the functions having different flow from typical *“insert into the table from the view”*. In another case, the result may be incorrect. Value is a list of function names separated by ',' or ',\' to go to the next line. *&lt;schema>* - is the schema name of the excluded functions. You can have one property *exclude.functions* for each schema. For example:
+**exclude.functions.&lt;schema>** - excluded functions. Functions configured in this property will be excluded from analyzation and from the result order. Put here all the functions having different flow from typical *“insert into table from view”*. In another case, the result may be incorrect. Value is a list of function names separated by ',' or ',\\' to go to the next line. *&lt;schema>* - is the schema name of the excluded functions. You can have one property *exclude.functions* for each schema. For example:
 
 	exclude.functions.datastaging=\
 		populateentity,\
