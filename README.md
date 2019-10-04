@@ -27,7 +27,7 @@ MyelinFlow - it's a console tool to get the execution order of the population fu
 4. You will get a *.xlsx* file in the result
 <br/><br/>
 
-**Configuration file description:**
+**Configuration file description:**<br/>
 See *config-example.properties* file for the example.
 
 **db.host** - database host *(required)*<br/>
