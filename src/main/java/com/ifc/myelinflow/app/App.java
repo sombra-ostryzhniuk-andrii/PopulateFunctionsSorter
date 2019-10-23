@@ -44,11 +44,12 @@ public class App {
                 consolePrinterService.print(results);
             }
 
+            System.out.println("Finished successfully!");
+
         } catch (Exception e) {
             System.err.println("Error: " + e.getMessage());
+            System.err.println("Finished unsuccessfully.");
         }
-
-        System.out.println("Finished successfully!");
     }
 
     public static String[] getArguments() {
