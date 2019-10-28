@@ -18,6 +18,11 @@ public class SequenceService {
     private GraphService graphService = new GraphService();
     private TableService tableService = new TableService();
 
+    private static final String FIRST_SCHEMA = "datastaging";
+    private List<String> nassTables = Arrays.asList("nassproductionpractice","nassaggregationlevel","nassclass","nassgroup",
+            "nassfrequency","nassutilitypractice","nassstatisticcategory","nasswatershed","nasssector","nasscommodity",
+            "nassunitofmeasure","nassdomain","nassregion","nassstate","nassdistrict","nasssource","nasscountry","nasscounty");
+
     public PopulationSequenceResult getPopulationSequenceResult(Schema schema, List<PopulationSequenceResult> results) {
         PopulationSequenceResult result = new PopulationSequenceResult(schema);
 
@@ -33,7 +38,13 @@ public class SequenceService {
             DefaultDirectedGraph<Table, DefaultEdge> sourceSchemasGraph;
 
             if (results.isEmpty()) {
-                sourceSchemasGraph = graphService.getChildrenGraphForSourceSchemas(graph, sourceSchemas);
+//                sourceSchemasGraph = graphService.getChildrenGraphForSourceSchemas(graph, sourceSchemas);
+
+                Set<Table> sourceTables = nassTables.stream()
+                        .map(tableName -> new Table(tableName, FIRST_SCHEMA))
+                        .collect(Collectors.toSet());
+
+                sourceSchemasGraph = graphService.getChildrenGraphForSourceTables(graph, sourceTables);
             } else {
                 Set<Table> sourceTables = results.stream()
                         .filter(prevResult -> prevResult.getSchema().getPopulationOrder() == schema.getPopulationOrder() - 1)

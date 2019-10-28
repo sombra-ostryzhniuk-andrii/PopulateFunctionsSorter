@@ -19,6 +19,11 @@ public class Table {
         this.schema = schema;
     }
 
+    public Table(String name, String schema) {
+        this.name = name;
+        this.schema = schema;
+    }
+
     public String getName() {
         return name;
     }
