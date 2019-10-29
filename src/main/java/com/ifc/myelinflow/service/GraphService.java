@@ -183,7 +183,7 @@ public class GraphService {
         return getChildrenGraph(wholeSchemaGraph, primaryTables);
     }
 
-    private DefaultDirectedGraph<Table, DefaultEdge> getChildrenGraph(
+    public DefaultDirectedGraph<Table, DefaultEdge> getChildrenGraph(
             DefaultDirectedGraph<Table, DefaultEdge> wholeSchemaGraph,
             Set<Table> primaryTables) {
 

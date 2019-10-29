@@ -8,6 +8,7 @@ import com.ifc.myelinflow.service.factories.SequenceFactory;
 import com.ifc.myelinflow.utils.RegexEnum;
 import com.ifc.myelinflow.utils.RegexUtil;
 import com.ifc.myelinflow.utils.StringUtil;
+import org.jgrapht.graph.AbstractBaseGraph;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
 import java.util.*;
@@ -18,6 +19,8 @@ public class SequenceService {
     private GraphService graphService = new GraphService();
     private TableService tableService = new TableService();
 
+    private List<String> sourceTables = Arrays.asList("transactionline", "salesorderlines");
+
     public PopulationSequenceResult getPopulationSequenceResult(Schema schema, List<PopulationSequenceResult> results) {
         PopulationSequenceResult result = new PopulationSequenceResult(schema);
 
@@ -27,6 +30,14 @@ public class SequenceService {
         result.setWholeSchemaSequenceSet(getPopulationSequenceSet(graph));
 
         Map<SourceSchemas, TreeSet<PopulationSequence>> sourceSchemasSequenceMap = new HashMap<>();
+
+        Set<Table> childrenTables = result.getWholeSchemaSequenceSet().stream()
+                .map(PopulationSequence::getTable)
+                .filter(table -> sourceTables.contains(table.getName()))
+                .map(table -> graphService.getChildrenGraph(graph, Collections.singleton(table)))
+                .map(AbstractBaseGraph::vertexSet)
+                .flatMap(Set::stream)
+                .collect(Collectors.toSet());
 
         PropertiesProvider.getSourceSchemasSet().forEach(sourceSchemas -> {
 
