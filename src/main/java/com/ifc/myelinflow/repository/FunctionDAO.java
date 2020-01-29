@@ -16,7 +16,8 @@ public class FunctionDAO {
                            "       specific_schema as schema " +
                            "from information_schema.routines " +
                            "where specific_schema = ? " +
-                           "  and routine_name like 'populate%'",
+                           "  and routine_name like 'populate%' " +
+                           "  and routine_name not like 'populateuser%'",
                         BeanPropertyRowMapper.newInstance(Function.class),
                         schema);
     }
